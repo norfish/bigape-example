@@ -10,5 +10,7 @@ var Pagelet = require('../../../libs/pipe/Pagelet');
 module.exports = Pagelet.extend({
     name: 'modA',
 
+    domID: 'mod-a',
+
     template: 'modA'
 });

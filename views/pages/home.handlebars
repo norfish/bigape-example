@@ -9,4 +9,12 @@
         <div class="mod-b" id="mod-b"></div>
         <div class="mod-c" id="mod-c"></div>
     </body>
+
+    <script type="text/javascript">
+        var BigPipe = {};
+        BigPipe.onArrive = function(data) {
+            console.log('arrive pagelet', data);
+            document.querySelector('#' + data.domID).innerHTML = data.html;
+        }
+    </script>
 </html>

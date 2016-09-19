@@ -9,6 +9,7 @@
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
 var _ = require('lodash');
+var co = require('co');
 var qtemplate = require('@qnpm/q-template');
 
 function Pagelet(name, options) {
@@ -45,7 +46,7 @@ Pagelet.prototype = {
     pagelets: null,
 
     // template
-    view: '',
+    template: '',
 
     // 渲染模式
     mode: 'html',
@@ -58,8 +59,6 @@ Pagelet.prototype = {
      * @type {String}
      */
     styles: '',
-
-    service: null,
 
     _parent: null,
 
@@ -92,30 +91,56 @@ Pagelet.prototype = {
         return json;
     },
 
+    /**
+     * 执行pagelet的渲染,
+     * @param {Object} renderData 可选,如果传入则直接使用该数据渲染,否则通过service调用获取数据
+     */
     render: function(renderData) {
         var pagelet = this;
-
-        this.service().then(function(json) {
-
-            var parsed = pagelet.beforeRender(json);
-            if(pagelet.name !== 'layout') {
-                pagelet.template = 'partials/' + pagelet.template;
-            }
-            qtemplate.render(pagelet.template, parsed)
-                .then(function(html) {
-                    pagelet.write( pagelet.createChunk(html) );
-                });
-        });
+        return this.service()
+            .then(function(json) {
+                // 预处理
+                return pagelet.beforeRender(json);
+            })
+            .then(function(parsed) {
+                var templatePath;
+                if(pagelet.name === 'layout' || pagelet.name === 'bootstrap') {
+                    templatePath = pagelet.template;
+                } else {
+                    templatePath = 'partials/' + pagelet.template;
+                }
+                return qtemplate.render(templatePath, parsed)
+            })
+            .then(function(html) {
+                return pagelet.createChunk(html);
+            })
+            // handle error
+            .catch(function(err) {
+                pagelet.catch(err);
+            });
     },
 
+    /**
+     * 生成数据块
+     * @param {String} html
+     */
     createChunk: function(html) {
         var chunkObj = {
             html: html,
             scripts: this.scripts,
-            styles: this.styles
+            styles: this.styles,
+            domID: this.domID
         };
 
-        return JSON.stringify(chunkObj);
+        if(this.isBootstrap()) {
+            return html;
+        }
+
+        return '<script>BigPipe.onArrive('+ JSON.stringify(chunkObj) +')</script>'
+    },
+
+    isBootstrap: function() {
+        return this.name == 'layout' || this.name == 'bootstrap';
     },
 
     afterRender: function() {
@@ -234,8 +259,9 @@ var extend = function(props) {
     }
 
     // staticProps
+    Object.assign(child, parent);
     if(props && props.hasOwnProperty('static')) {
-        Object.assign(child, parent, props.static);
+        Object.assign(child, props.static);
         delete props.static;
     };
 
@@ -255,10 +281,17 @@ var extend = function(props) {
     return child;
 };
 
+var _pagelets = {};
+function extendPagelet(props) {
+    var child = extend.apply(this, arguments);
+    _pagelets[props.name] = child;
+    return child;
+}
+
 // extend eventEmitter
 // util.inherits(Pagelet, EventEmitter);
 
-Pagelet.extend = extend;
+Pagelet.extend = extendPagelet;
 
 Pagelet.create = (function() {
     var __instance = {};
@@ -270,7 +303,7 @@ Pagelet.create = (function() {
         }
 
         if(!__instance[name]) {
-            __instance[name] = new Pagelet(name, options);
+            __instance[name] = new this(name, options);
         }
 
         return __instance[name];

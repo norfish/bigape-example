@@ -10,6 +10,7 @@ var util = require('util');
 var _ = require('lodash');
 var EventEmitter = require('events').EventEmitter;
 var Pagelet = require('./Pagelet');
+var co = require('co')
 
 function NOOP() {}
 
@@ -24,7 +25,9 @@ function BigPipe(name, options) {
     this._cache = {};
 
     // layout bootstrap
-    this.layout = options.layout || {};
+    this._bootstrap = options._bootstrap || {};
+
+    this.layout = null;
 
     // pagelet module list
     this.pagelets = options.pagelets || [];
@@ -42,7 +45,7 @@ function BigPipe(name, options) {
     this._res = null;
     this._next = null;
 
-    this.length = options.length || 1;
+    this.length = options.pagelets.length || 1;
 
     // this.initialize.apply(this, options);
 }
@@ -77,10 +80,6 @@ BigPipe.prototype = {
             view: chunk
         });
 
-        if(!this.length) {
-            this.flush();
-        }
-
         return this;
     },
 
@@ -98,16 +97,19 @@ BigPipe.prototype = {
 
         // 确保不会在 end 之后再 write chunk
         if(this._res.finished) {
+            done();
             // this.emit('done', new Error('Response was closed, unable to flush content'));
         }
 
         if (!this._queue.length) {
+            done();
             // this.emit('done');
         }
 
         var data = new Buffer(this.join(), this.charset);
 
         if (data.length) {
+            console.log('info: flush pagelet data {{', data.toString(), '}}');
             this._res.write(
                 data
                 // this.emit('done')
@@ -120,6 +122,7 @@ BigPipe.prototype = {
         // our selfs.
         // response.write(chunk[, encoding][, callback])
         if (this._res.write.length !== 3 || !data.length) {
+            done();
             // this.emit('done');
         }
     },
@@ -129,13 +132,12 @@ BigPipe.prototype = {
      * @return {String} 合并后的chunk
      */
     join: function() {
-        var result = this._queue.map(function(item) {
+        var result = this._chunks.map(function(item) {
             // return item.data;
-            return item;
+            return item.view;
         });
 
-        this._queue.length = 0;
-
+        this._chunks.length = 0;
         return result.join('');
     },
 
@@ -148,7 +150,7 @@ BigPipe.prototype = {
         var bigpipe = this;
         var _pagelets = this._pagelets;
 
-        this.pagelets.map(function(pagelet) {
+        this._pagelets = this.pagelets.map(function(pagelet) {
             var options = {
                 req: bigpipe._req,
                 res: bigpipe._res,
@@ -156,9 +158,9 @@ BigPipe.prototype = {
                 query: bigpipe._query,
                 bigpipe: bigpipe
             }
-            var pageletPipe = Pagelet.create(pagelet.name, options);
-            _pagelets.push(pageletPipe);
+            return pagelet.create(pagelet.prototype.name, options);
         });
+
     },
 
     /**
@@ -178,25 +180,46 @@ BigPipe.prototype = {
         //     params: {}
         // });
         //
-
-        var _layout = Pagelet.create('bootstrap', {
+        this.layout = this._bootstrap.create(this._bootstrap.prototype.name, {
             req: this._req,
             res: this._res,
             next: this._next,
             bigpipe: this
         });
 
-        _layout.render();
+        return this;
+
     },
 
     renderLayout: function() {
-
+        var bigpipe = this;
+        return this.layout.render().then(function(chunk) {
+                return bigpipe.layout.write(chunk).flush();
+            });
     },
 
     renderAsync: function() {
         var bigpipe = this;
-        this._pagelets.forEach(function(pagelet) {
-            pagelet.render();
+        this.renderLayout().then(function() {
+            var pageletArr = [];
+            bigpipe._pagelets.forEach(function(pagelet) {
+                var render = pagelet.render().then(function (chunk) {
+                    pagelet.write(chunk).flush();
+                }, function (errData) {
+
+                });
+
+                pageletArr.push(render);
+            });
+
+            co(function* () {
+                return yield pageletArr;
+            }).then(function() {
+                bigpipe.end();
+            });
+
+        }).catch(function(err) {
+            bigpipe.catch(err);
         });
     },
 
@@ -210,11 +233,45 @@ BigPipe.prototype = {
 
     renderSnippet: function() {
 
-    }
+    },
+
+    catch: function(err) {
+        console.error('error', err)
+    },
+
+    /**
+     * end flush
+     * @param  {[type]} chunk [description]
+     * @return {[type]}       [description]
+     */
+    end: function(chunk) {
+        return this._res.end('</html>');
+        var pagelet = this;
+
+        if (chunk) this.write(chunk);
+
+        //
+        // Do not close the connection before all pagelets are send.
+        //
+        if (this.bigpipe.length > 0) {
+            return false;
+        }
+
+        //
+        // Everything is processed, close the connection and clean up references.
+        //
+        this.bigpipe.flush(function close(error) {
+            if (error) return pagelet.catch(error, true);
+
+            pagelet._res.end();
+        });
+
+        return true;
+    },
 };
 
 // extend eventEmitter
-// _.extend(BigPipe.proptotype, EventEmitter);
+// _.extend(BigPipe.prototype, EventEmitter);
 
 BigPipe.create = (function() {
     var __instance = {};
