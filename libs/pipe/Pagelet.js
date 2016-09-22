@@ -48,7 +48,7 @@ Pagelet.prototype = {
     // template
     template: '',
 
-    // 渲染模式
+    // 渲染模式 html json
     mode: 'html',
 
     // 脚本
@@ -290,6 +290,8 @@ function extendPagelet(props) {
 
 // extend eventEmitter
 // util.inherits(Pagelet, EventEmitter);
+// extend eventEmitter
+_.extend(Pagelet.prototype, EventEmitter.prototype);
 
 Pagelet.extend = extendPagelet;
 

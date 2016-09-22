@@ -12,5 +12,11 @@ module.exports = Pagelet.extend({
 
     domID: 'mod-a',
 
-    template: 'modA'
+    template: 'modA',
+
+    beforeRender: function(data) {
+        return {
+            msg: 'parsed mod-a'
+        }
+    }
 });
