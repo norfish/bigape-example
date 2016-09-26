@@ -65,7 +65,13 @@ BigPipe.prototype = {
         return this;
     },
 
+    usePagelets: function (pageletsObj) {
+        this.pagelets = pageletsObj;
+        return this;
+    },
+
     router: function(req, res, next) {
+        logger.info('开始Bigpipe，router使用模块为['+ Object.keys(this.pagelets).join('|')+']');
         this._cache = {};
         this.bootstrap(req, res, next);
         this.createPagelets();
@@ -109,13 +115,13 @@ BigPipe.prototype = {
 
         this.once('done', done);
 
+        if (!this._queue.length) {
+            this.emit('done');
+        }
+
         // 确保不会在 end 之后再 write chunk
         if(this._res.finished) {
             this.emit('done', new Error('Response was closed, unable to flush content'));
-        }
-
-        if (!this._queue.length) {
-            this.emit('done');
         }
 
         var data = new Buffer(this.join(), this.charset);
@@ -124,10 +130,9 @@ BigPipe.prototype = {
         }).join('&');
 
         if (data.length) {
-            console.log('info: flush pagelet ['+ pageletName +'] data {{', data.toString(), '}}');
+            logger.record('info: flush pagelet ['+ pageletName +'] data {{', data.toString(), '}}');
             this._res.write(
-                data,
-                this.emit('done')
+                data
             );
         }
 
@@ -163,7 +168,7 @@ BigPipe.prototype = {
      */
     createPagelets: function() {
         var bigpipe = this;
-        var _pagelets = this._pagelets;
+        var _pagelets = this._pagelets = [];
 
         _.forIn(this.pagelets, function(pagelet, name) {
             var options = {
@@ -176,28 +181,13 @@ BigPipe.prototype = {
 
             var newPagelet = pagelet.create(name, options);
             bigpipe._cache[name] = newPagelet;
-            bigpipe._pagelets.push(newPagelet);
+            _pagelets.push(newPagelet);
         });
 
         //refresh length
-        bigpipe.length = bigpipe._pagelets.length;
+        bigpipe.length = _pagelets.length;
 
-        return bigpipe._pagelets;
-
-        // this._pagelets = this.pagelets.map(function(pagelet) {
-        //     var options = {
-        //         req: bigpipe._req,
-        //         res: bigpipe._res,
-        //         next: bigpipe._next,
-        //         query: bigpipe._query,
-        //         bigpipe: bigpipe
-        //     }
-        //
-        //     var newPagelet = pagelet.create(pagelet.prototype.name, options);
-        //     bigpipe._cache[pagelet.prototype.name] = newPagelet;
-        //
-        //     return newPagelet;
-        // });
+        return _pagelets;
 
     },
 
@@ -287,8 +277,24 @@ BigPipe.prototype = {
 
     },
 
-    renderSnippet: function() {
+    renderSnippet: function(moduleName) {
+        var bigpipe = this;
+        if(!moduleName) {
+            logger.error('处理失败,没有传入需要处理的模块');
+            this._json({
+                status: 500,
+                message: '未获取到数据'
+            });
+        }
 
+        logger.info('开始处理html snippet接口数据, 模块['+ moduleName +']');
+
+        var module = this._cache[moduleName];
+
+        // bigpipe._res.set('Content-Type', 'text/html; charset=utf-8');
+        module.renderSnippet().then(function(snippet) {
+            module.end(snippet);
+        });
     },
 
     /**

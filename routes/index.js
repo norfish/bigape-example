@@ -10,13 +10,11 @@ router.get('/', function(req, res, next) {
     });
 });
 
-router.get('/test', function(req, res, next) {
-    testController.render(req, res, next);
-})
+router.get('/test', testController.render)
 
-router.get('/test/api', function(req, res, next) {
-    testController.renderJSON(req, res, next);
-})
+router.get('/test/api', testController.renderJSON)
+
+router.get('/test/snippet', testController.renderSnippet)
 
 // check_url，发布使用，不要删除
 router.get('/check_url', function(req, res, next) {

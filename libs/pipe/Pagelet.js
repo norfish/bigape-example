@@ -150,6 +150,40 @@ Pagelet.prototype = {
 
         logger.info('开始渲染Pagelet模块['+ pagelet.name +']@', new Date());
 
+        return this._getRenderHtml()
+            .then(function(html) {
+                return pagelet._createChunk(html);
+            })
+            // handle error
+            .catch(function(err) {
+                logger.error('Pagelet render error::', err);
+                pagelet.catch(err);
+            });
+    },
+
+    /**
+     * 渲染html-fragment 片段
+     * @param  {String} html render result
+     * @return {String}      处理之后的数据
+     */
+    renderSnippet: function() {
+        var pagelet = this;
+
+        return this._getRenderHtml()
+            .then(function(html) {
+                return html;
+            })
+            // handle error
+            .catch(function(err) {
+                logger.error('Pagelet render snippet error::', err);
+                pagelet.catch(err);
+            });
+    },
+
+
+    _getRenderHtml: function() {
+        var pagelet = this;
+
         return this._getRenderData()
             .then(function(json) {
                 // 预处理
@@ -167,14 +201,6 @@ Pagelet.prototype = {
             })
             .then(function(html) {
                 return pagelet.afterRender(html);
-            })
-            .then(function(html) {
-                return pagelet.createChunk(html);
-            })
-            // handle error
-            .catch(function(err) {
-                logger.error('Pagelet render error::', err);
-                pagelet.catch(err);
             });
     },
 
@@ -182,7 +208,7 @@ Pagelet.prototype = {
      * 生成数据块
      * @param {String} html
      */
-    createChunk: function(html) {
+    _createChunk: function(html) {
         var chunkObj = {
             id: this.name,
             html: html,
@@ -252,7 +278,7 @@ Pagelet.prototype = {
         this.bigpipe.flush(function close(error) {
             if (error) return pagelet.catch(error, true);
 
-            pagelet._res.end();
+            pagelet.res.end();
         });
 
         return true;
