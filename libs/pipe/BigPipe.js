@@ -278,10 +278,8 @@ BigPipe.prototype = {
             mod = bigpipe._cache[mod];
             return mod.get();
         }).then(function(data) {
-            debugger
             bigpipe._json(data);
         }).catch(function(error) {
-            debugger
             logger.error('处理JSON数据接口错误', error);
             var errObj = bigpipe._getErrObj(error);
             bigpipe._json(errObj);
@@ -293,6 +291,10 @@ BigPipe.prototype = {
 
     },
 
+    /**
+     * response json data to the client
+     * @param  {Object|Array} data 需要render的原始数据，数组会被处理成Object
+     */
     _json: function(data) {
         if(!data || _.isPlainObject(data)) {
             this._res.json(data);
@@ -309,6 +311,11 @@ BigPipe.prototype = {
         });
     },
 
+    /**
+     * 根据error Object 获取error json
+     * @param  {Object} error error stack 或者Object
+     * @return {Object}       error json
+     */
     _getErrObj: function (error) {
         return {
             status: error.status || 502,
