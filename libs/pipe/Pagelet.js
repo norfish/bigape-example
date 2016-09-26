@@ -11,6 +11,8 @@ var EventEmitter = require('events').EventEmitter;
 var _ = require('lodash');
 var co = require('co');
 var qtemplate = require('@qnpm/q-template');
+var qmonitor = require('@qnpm/q-monitor');
+var logger = require('@qnpm/q-logger');
 
 function Pagelet(name, options) {
     // pagelet uid
@@ -25,9 +27,6 @@ function Pagelet(name, options) {
     // bigpipe 实例
     this.bigpipe = options.bigpipe;
 
-    // 请求参数
-    this.params = options.params;
-
     //
     this._bootstrap = options.bootstrap;
 
@@ -38,9 +37,11 @@ function Pagelet(name, options) {
 Pagelet.prototype = {
     constructor: Pagelet,
 
-    domID: '',
+    qmonitor: '',
 
-    modID: '',
+    name: '',
+
+    domID: '',
 
     // 子片段
     pagelets: null,
@@ -75,7 +76,7 @@ Pagelet.prototype = {
     },
 
     initialize: function() {
-
+        return this;
     },
 
     bootstrap: function(value) {
@@ -87,8 +88,55 @@ Pagelet.prototype = {
         }
     },
 
+    /**
+     * 暴露出的获取本pagelet数据的函数  readonly
+     * @return {Promise} Object
+     */
+    get: function() {
+        var pagelet = this;
+        return this._getRenderData().then(function(json) {
+            return pagelet.beforeRender(json);
+        });
+    },
+
+    /**
+     * 获取渲染的原始数据 readonly
+     * @return {Object} Promise
+     */
+    _getRenderData: function() {
+        var data = this.getRenderData();
+
+        if(this.isPromise(data)) {
+            return data;
+        }
+
+        return Promise.resolve(data);
+    },
+
+    /**
+     * 获取渲染的原始数据 可以被覆盖，默认是通过service取接口数据，返回promise
+     * @return {[type]} [description]
+     */
+    getRenderData: function() {
+        var serviceData = {};
+        if(typeof this.service === 'function') {
+            serviceData = this.service();
+        }
+
+        return serviceData;
+    },
+
+    /**
+     * 处理通过getRenderData获取的原始数据
+     * @param  {Object} json 原始数据
+     * @return {Object}      处理之后的数据
+     */
     beforeRender: function(json) {
         return json;
+    },
+
+    afterRender: function(html) {
+        return html;
     },
 
     /**
@@ -97,25 +145,33 @@ Pagelet.prototype = {
      */
     render: function(renderData) {
         var pagelet = this;
-        return this.service()
+
+        logger.info('开始渲染Pagelet模块['+ pagelet.name +']@', new Date());
+
+        return this._getRenderData()
             .then(function(json) {
                 // 预处理
                 return pagelet.beforeRender(json);
             })
             .then(function(parsed) {
                 var templatePath;
-                if(pagelet.name === 'layout' || pagelet.name === 'bootstrap') {
+
+                if(pagelet.isBootstrap()) {
                     templatePath = pagelet.template;
                 } else {
                     templatePath = 'partials/' + pagelet.template;
                 }
-                return qtemplate.render(templatePath, parsed)
+                return qtemplate.render(templatePath, parsed);
+            })
+            .then(function(html) {
+                return pagelet.afterRender(html);
             })
             .then(function(html) {
                 return pagelet.createChunk(html);
             })
             // handle error
             .catch(function(err) {
+                logger.error('Pagelet render error::', err);
                 pagelet.catch(err);
             });
     },
@@ -126,6 +182,7 @@ Pagelet.prototype = {
      */
     createChunk: function(html) {
         var chunkObj = {
+            id: this.name,
             html: html,
             scripts: this.scripts,
             styles: this.styles,
@@ -139,20 +196,12 @@ Pagelet.prototype = {
         return '<script>BigPipe.onArrive('+ JSON.stringify(chunkObj) +')</script>'
     },
 
+    /**
+     * 是否是基础模块
+     * @return {Boolean}
+     */
     isBootstrap: function() {
         return this.name == 'layout' || this.name == 'bootstrap';
-    },
-
-    afterRender: function() {
-
-    },
-
-    get: function() {
-        var service = this.service;
-
-        if(pagelets) {
-
-        }
     },
 
     /**

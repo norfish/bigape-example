@@ -14,9 +14,15 @@ module.exports = Pagelet.extend({
 
     template: 'modA',
 
+    getRenderData: function() {
+        return {
+            info: 'mod-a data demo'
+        }
+    },
+
     beforeRender: function(data) {
         return {
-            msg: 'parsed mod-a'
+            msg: 'parsed mod-a' + data.info
         }
     }
 });

@@ -2,6 +2,10 @@
  * @desc: Bigpipe
  * @authors: yongxiang.li
  * @date: 2016-08-03 20:32:03
+ *
+ * TODO
+ * 1. static module
+ * 2.
  */
 
 'use strict';
@@ -11,34 +15,31 @@ var _ = require('lodash');
 var EventEmitter = require('events').EventEmitter;
 var Pagelet = require('./Pagelet');
 var co = require('co');
-
-function NOOP() {}
+var qmonitor = require('@qnpm/q-monitor');
+var logger = require('@qnpm/q-logger');
 
 function BigPipe(name, options) {
 
     this.bigpipe = this;
 
     // 标识符id，需要唯一
-    this.id = name;
+    this.name = name;
 
-    this._options = options;
+    this.options = options;
 
     // pagelet 缓存
     this._cache = {};
-
-    // layout bootstrap
-    this._bootstrap = options._bootstrap || {};
 
     this.layout = null;
 
     // pagelet module list
     this.pagelets = options.pagelets || [];
 
+    // layout bootstrap
+    this._bootstrap = options._bootstrap || {};
+
     // 实例化的页面片段集合
     this._pagelets = [];
-
-    // pagelet chunk 集合
-    this._chunks = [];
 
     // 需要flush到客户端的片段集合
     this._queue = [];
@@ -48,6 +49,7 @@ function BigPipe(name, options) {
     this._res = null;
     this._next = null;
 
+    // 所有的一级 pagelet 数量
     this.length = options.pagelets.length || 1;
 
     // this.initialize.apply(this, options);
@@ -87,6 +89,13 @@ BigPipe.prototype = {
     },
 
     /**
+     * 清空队列
+     */
+    clearQueue: function () {
+        this._queue = [];
+    },
+
+    /**
      * flush chunk
      * @param  {Function} done flush 完成之后的callback
      * @return {[type]}        [description]
@@ -108,9 +117,12 @@ BigPipe.prototype = {
         }
 
         var data = new Buffer(this.join(), this.charset);
+        var pageletName = this._queue.map(function (q) {
+            return q.name;
+        }).join('&');
 
         if (data.length) {
-            console.log('info: flush pagelet data {{', data.toString(), '}}');
+            console.log('info: flush pagelet ['+ pageletName +'] data {{', data.toString(), '}}');
             this._res.write(
                 data,
                 this.emit('done')
@@ -125,6 +137,8 @@ BigPipe.prototype = {
         if (this._res.write.length !== 3 || !data.length) {
             this.emit('done');
         }
+
+        this.clearQueue();
     },
 
     /**
@@ -190,7 +204,9 @@ BigPipe.prototype = {
 
     renderLayout: function() {
         var bigpipe = this;
+        logger.info('开始渲染layout脚手架模块');
         return this.layout.render().then(function(chunk) {
+                logger.info('渲染layout脚手架模块完成');
                 return bigpipe.layout.write(chunk).flush();
             });
     },
@@ -200,7 +216,7 @@ BigPipe.prototype = {
         this.renderLayout().then(function() {
             // promise array
             var pageletArr = [];
-            
+
             bigpipe._pagelets.forEach(function(pagelet) {
                 // render Promise
                 var render = pagelet.render().then(function (chunk) {
@@ -255,6 +271,9 @@ BigPipe.create = (function() {
         return __instance[name];
     }
 })();
+
+// function noop
+function NOOP() {}
 
 module.exports = BigPipe;
 // BigPipe 一个页面一个
