@@ -17,6 +17,7 @@ var Pagelet = require('./Pagelet');
 var co = require('co');
 var qmonitor = require('@qnpm/q-monitor');
 var logger = require('@qnpm/q-logger');
+var Promise = require('bluebird');
 
 function BigPipe(name, options) {
 
@@ -33,7 +34,7 @@ function BigPipe(name, options) {
     this.layout = null;
 
     // pagelet module list
-    this.pagelets = options.pagelets || [];
+    this.pagelets = options.pagelets || {};
 
     // layout bootstrap
     this._bootstrap = options._bootstrap || {};
@@ -50,7 +51,7 @@ function BigPipe(name, options) {
     this._next = null;
 
     // 所有的一级 pagelet 数量
-    this.length = options.pagelets.length || 1;
+    this.length = Object.keys(options.pagelets).length || 1;
 
     // this.initialize.apply(this, options);
 }
@@ -65,6 +66,7 @@ BigPipe.prototype = {
     },
 
     router: function(req, res, next) {
+        this._cache = {};
         this.bootstrap(req, res, next);
         this.createPagelets();
 
@@ -163,10 +165,7 @@ BigPipe.prototype = {
         var bigpipe = this;
         var _pagelets = this._pagelets;
 
-        // pagelet length
-        this.length = _pagelets.length;
-
-        this._pagelets = this.pagelets.map(function(pagelet) {
+        _.forIn(this.pagelets, function(pagelet, name) {
             var options = {
                 req: bigpipe._req,
                 res: bigpipe._res,
@@ -174,8 +173,31 @@ BigPipe.prototype = {
                 query: bigpipe._query,
                 bigpipe: bigpipe
             }
-            return pagelet.create(pagelet.prototype.name, options);
+
+            var newPagelet = pagelet.create(name, options);
+            bigpipe._cache[name] = newPagelet;
+            bigpipe._pagelets.push(newPagelet);
         });
+
+        //refresh length
+        bigpipe.length = bigpipe._pagelets.length;
+
+        return bigpipe._pagelets;
+
+        // this._pagelets = this.pagelets.map(function(pagelet) {
+        //     var options = {
+        //         req: bigpipe._req,
+        //         res: bigpipe._res,
+        //         next: bigpipe._next,
+        //         query: bigpipe._query,
+        //         bigpipe: bigpipe
+        //     }
+        //
+        //     var newPagelet = pagelet.create(pagelet.prototype.name, options);
+        //     bigpipe._cache[pagelet.prototype.name] = newPagelet;
+        //
+        //     return newPagelet;
+        // });
 
     },
 
@@ -239,12 +261,59 @@ BigPipe.prototype = {
 
     },
 
-    renderJSON: function() {
+    renderJSON: function(modules) {
+
+        var bigpipe = this;
+        if(!modules || !modules.length) {
+            logger.error('处理失败,没有传入需要处理的模块');
+            bigpipe._json({
+                status: 500,
+                message: '未获取到数据'
+            });
+        }
+
+        logger.info('开始处理JSON接口数据, 模块['+ modules.join(' | ') +']');
+
+        Promise.map(modules, function(mod) {
+            mod = bigpipe._cache[mod];
+            return mod.get();
+        }).then(function(data) {
+            debugger
+            bigpipe._json(data);
+        }).catch(function(error) {
+            debugger
+            logger.error('处理JSON数据接口错误', error);
+            var errObj = bigpipe._getErrObj(error);
+            bigpipe._json(errObj);
+        });
 
     },
 
     renderSnippet: function() {
 
+    },
+
+    _json: function(data) {
+        if(!data || _.isPlainObject(data)) {
+            this._res.json(data);
+        }
+
+        data = data.reduce(function (pre, cur) {
+            return _.extend(pre, cur);
+        }, {});
+
+        this._res.json({
+            status: 0,
+            message: 'success',
+            data: data
+        });
+    },
+
+    _getErrObj: function (error) {
+        return {
+            status: error.status || 502,
+            message: error.message || '系统繁忙,请稍后重试'
+        }
     },
 
     catch: function(err) {

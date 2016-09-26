@@ -14,6 +14,10 @@ router.get('/test', function(req, res, next) {
     testController.render(req, res, next);
 })
 
+router.get('/test/api', function(req, res, next) {
+    testController.renderJSON(req, res, next);
+})
+
 // check_url，发布使用，不要删除
 router.get('/check_url', function(req, res, next) {
     res.end('check_url ok');

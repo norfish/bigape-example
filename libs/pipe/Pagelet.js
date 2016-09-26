@@ -95,7 +95,9 @@ Pagelet.prototype = {
     get: function() {
         var pagelet = this;
         return this._getRenderData().then(function(json) {
-            return pagelet.beforeRender(json);
+            var parsed = {};
+            parsed[pagelet.name] = pagelet.beforeRender(json);
+            return parsed;
         });
     },
 
