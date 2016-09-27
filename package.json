@@ -13,6 +13,7 @@
     "@qnpm/q-multiprocess": "~1.0.3",
     "@qnpm/q-template": "^2.1.0",
     "@qnpm/q-version": "~1.0.2",
+    "bluebird": "^3.4.6",
     "body-parser": "~1.13.2",
     "co": "^4.6.0",
     "compression": "~1.5.0",

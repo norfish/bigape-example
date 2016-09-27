@@ -71,7 +71,7 @@ BigPipe.prototype = {
     },
 
     router: function(req, res, next) {
-        logger.info('开始Bigpipe，router使用模块为['+ Object.keys(this.pagelets).join('|')+']');
+        logger.info('开始Bigpip, start router使用模块为['+ Object.keys(this.pagelets).join('|')+']');
         this._cache = {};
         this.bootstrap(req, res, next);
         this.createPagelets();
