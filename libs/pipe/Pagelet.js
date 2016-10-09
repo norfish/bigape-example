@@ -278,7 +278,8 @@ Pagelet.prototype = {
         this.bigpipe.flush(function close(error) {
             if (error) return pagelet.catch(error, true);
 
-            pagelet.res.end();
+            logger.info('Bigpipe end @', new Date());
+            pagelet.res.end('</html>');
         });
 
         return true;
