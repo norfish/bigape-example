@@ -79,6 +79,12 @@ BigPipe.prototype = {
         return this;
     },
 
+    // same with usePagelets
+    pipe: function(pageletsObj) {
+        this.pagelets = pageletsObj;
+        return this;
+    },
+
     /**
      * route 请求，每次处理新请求，需要更新bigpipe和对于模块的req,res,next
      * @return {this}
