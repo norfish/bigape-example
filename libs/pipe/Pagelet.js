@@ -142,6 +142,8 @@ Pagelet.prototype = {
         return Promise.resolve(data);
     },
 
+    // get
+
     /**
      * 获取渲染的原始数据 可以被覆盖，默认是通过service取接口数据，返回promise
      * @return {[type]} [description]
