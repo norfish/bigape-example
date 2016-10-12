@@ -20,6 +20,8 @@ module.exports = Pagelet.extend({
         }
     },
 
+    wait: 'modB',
+
     beforeRender: function(data) {
         return {
             msg: 'parsed mod-a' + data.info

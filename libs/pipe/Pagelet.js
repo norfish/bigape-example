@@ -65,6 +65,8 @@ Pagelet.prototype = {
 
     _children: null,
 
+    _isWaiting: true,
+
     service: function() {
         return new Promise(function(resolve, reject) {
             setTimeout(function() {
@@ -76,6 +78,7 @@ Pagelet.prototype = {
     },
 
     initialize: function() {
+        this._isWaiting = !!this.wait;
         return this;
     },
 
@@ -87,6 +90,13 @@ Pagelet.prototype = {
             return this._bootstrap = value;
         }
     },
+
+    //需要依赖其他模块
+    wait: null,
+
+    // depend: function() {
+    //     this.on
+    // },
 
     /**
      * 暴露出的获取本pagelet数据的函数  readonly
@@ -148,6 +158,19 @@ Pagelet.prototype = {
     render: function(renderData) {
         var pagelet = this;
 
+        if(this.wait && this._isWaiting) {
+            logger.info('需要依赖其他模块', this.wait);
+            return new Promise(function(resolve, reject) {
+                pagelet.bigpipe.once(pagelet.wait + ':done', function(dependData) {
+                    logger.record('获取到依赖数据', dependData);
+                    pagelet._isWaiting = false;
+                    pagelet.render().then(function(data) {
+                        resolve(data);
+                    });
+                });
+            });
+        }
+
         logger.info('开始渲染Pagelet模块['+ pagelet.name +']@', new Date());
 
         return this._getRenderHtml()
@@ -168,6 +191,12 @@ Pagelet.prototype = {
      */
     renderSnippet: function() {
         var pagelet = this;
+
+        if(this.wait) {
+            return this.once(this.wait + ':done', function() {
+                pagelet.render();
+            });
+        }
 
         return this._getRenderHtml()
             .then(function(html) {
@@ -190,6 +219,9 @@ Pagelet.prototype = {
                 return pagelet.beforeRender(json);
             })
             .then(function(parsed) {
+                logger.info('数据处理成功，触发事件['+ pagelet.name +':done]');
+                pagelet.bigpipe.emit(pagelet.name + ':done', parsed);
+
                 var templatePath;
 
                 if(pagelet.isBootstrap()) {
