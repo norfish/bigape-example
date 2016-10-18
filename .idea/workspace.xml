@@ -2,18 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0beb2d45-9683-4a78-9f74-c4ee86ea2d68" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/modules/home/index.js" afterPath="$PROJECT_DIR$/app/modules/home/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/modules/home/modA.js" afterPath="$PROJECT_DIR$/app/modules/home/modA.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/test.js" afterPath="$PROJECT_DIR$/app/controllers/test.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/modules/home/modB.js" afterPath="$PROJECT_DIR$/app/modules/home/modB.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/modules/home/modC.js" afterPath="$PROJECT_DIR$/app/modules/home/modC.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/pipe/BigPipe.js" afterPath="$PROJECT_DIR$/libs/pipe/BigPipe.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/pipe/Pagelet.js" afterPath="$PROJECT_DIR$/libs/pipe/Pagelet.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/pipe/README.md" afterPath="$PROJECT_DIR$/libs/pipe/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/pipe/Service.js" afterPath="$PROJECT_DIR$/libs/pipe/Service.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/partials/modA.handlebars" afterPath="$PROJECT_DIR$/views/partials/modA.handlebars" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/partials/modB.handlebars" afterPath="$PROJECT_DIR$/views/partials/modB.handlebars" />
     </list>
     <ignored path="beep.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -39,18 +33,8 @@
       <file leaf-file-name="BigPipe.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/libs/pipe/BigPipe.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="341">
-              <caret line="542" column="0" selection-start-line="542" selection-start-column="0" selection-end-line="542" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="response.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/node_modules/express/lib/response.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="706" column="1" selection-start-line="706" selection-start-column="1" selection-end-line="706" selection-end-column="1" />
+            <state relative-caret-position="391">
+              <caret line="145" column="31" selection-start-line="145" selection-start-column="31" selection-end-line="145" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -59,60 +43,16 @@
       <file leaf-file-name="Pagelet.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/libs/pipe/Pagelet.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="177" column="7" selection-start-line="177" selection-start-column="7" selection-end-line="177" selection-end-column="7" />
+            <state relative-caret-position="204">
+              <caret line="111" column="9" selection-start-line="111" selection-start-column="9" selection-end-line="111" selection-end-column="9" />
               <folding>
-                <marker date="1476762960000" expanded="true" signature="0:264" ph="/** @desc: Pagelets ...*/" />
-                <marker date="1476762960000" expanded="true" signature="1160:1203" ph="/** 样式 ...*/" />
-                <marker date="1476762960000" expanded="true" signature="2004:2108" ph="/** 暴露出的获取本pagelet数据的函数  readonly ...*/" />
-                <marker date="1476762960000" expanded="true" signature="3638:3738" ph="/** 获取渲染的原始数据 可以被覆盖，默认是通过service取接口数据，返回promise ...*/" />
-                <marker date="1476762960000" expanded="true" signature="3769:3936" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="3848:3901" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="3943:4057" ph="/** 处理通过getRenderData获取的原始数据 ...*/" />
-                <marker date="1476762960000" expanded="true" signature="4091:4119" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="4154:4182" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="4189:4291" ph="/** 执行pagelet的渲染, ...*/" />
-                <marker date="1476762960000" expanded="true" signature="4325:4778" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="4501:4595" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="4658:4770" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="4785:4902" ph="/** 渲染html-fragment 片段 ...*/" />
-                <marker date="1476762960000" expanded="true" signature="4933:5417" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="4986:5110" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="5049:5098" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="5182:5226" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="5289:5409" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="5452:6837" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="5568:6200" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="5923:5995" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="6001:6087" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="6218:6426" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="6461:6616" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="6506:6600" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="6640:6829" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="6880:7011" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="6914:7003" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="7018:7070" ph="/** 生成数据块 ...*/" />
-                <marker date="1476762960000" expanded="true" signature="7116:7711" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="7172:7208" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="7233:7620" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="7753:7787" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="7794:7845" ph="/** 是否是基础模块 ...*/" />
-                <marker date="1476762960000" expanded="true" signature="7874:7947" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="7954:8016" ph="/** flush ...*/" />
-                <marker date="1476762960000" expanded="true" signature="8039:8076" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="8083:8239" ph="/** flush ...*/" />
-                <marker date="1476762960000" expanded="true" signature="8273:8417" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="8295:8362" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="8424:8540" ph="/** end flush ...*/" />
-                <marker date="1476762960000" expanded="true" signature="8566:9251" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="8764:8801" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="9258:9376" ph="/** catch error ...*/" />
-                <marker date="1476762960000" expanded="true" signature="9404:9450" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="9457:9520" ph="/** 获取依赖数据 ...*/" />
-                <marker date="1476762960000" expanded="true" signature="9564:9702" ph="/** 根据error Object 获取error json ...*/" />
-                <marker date="1476762960000" expanded="true" signature="9736:9862" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="9753:9856" ph="{...}" />
-                <marker date="1476762960000" expanded="true" signature="10072:10221" ph="/** extend ...*/" />
+                <marker date="1476776863000" expanded="true" signature="2020:2148" ph="{...}" />
+                <marker date="1476776863000" expanded="true" signature="2111:2148" ph="{...}" />
+                <marker date="1476776863000" expanded="true" signature="9205:9235" ph="{...}" />
+                <marker date="1476776863000" expanded="true" signature="9388:9434" ph="{...}" />
+                <marker date="1476776863000" expanded="true" signature="9533:9541" ph="{...}" />
+                <marker date="1476776863000" expanded="true" signature="9720:9846" ph="{...}" />
+                <marker date="1476776863000" expanded="true" signature="9737:9840" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -151,8 +91,8 @@
       <file leaf-file-name="modA.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/modules/home/modA.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="22" column="6" selection-start-line="22" selection-start-column="6" selection-end-line="22" selection-end-column="6" />
+            <state relative-caret-position="256">
+              <caret line="28" column="16" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -161,8 +101,8 @@
       <file leaf-file-name="modC.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/modules/home/modC.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" column="30" selection-start-line="18" selection-start-column="30" selection-end-line="18" selection-end-column="30" />
+            <state relative-caret-position="340">
+              <caret line="20" column="10" selection-start-line="20" selection-start-column="10" selection-end-line="20" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -171,8 +111,8 @@
       <file leaf-file-name="modB.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/modules/home/modB.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="290">
-              <caret line="24" column="31" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="31" />
+            <state relative-caret-position="266">
+              <caret line="21" column="16" selection-start-line="21" selection-start-column="16" selection-end-line="21" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -181,8 +121,18 @@
       <file leaf-file-name="test.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controllers/test.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="31" column="2" selection-start-line="31" selection-start-column="2" selection-end-line="31" selection-end-column="2" />
+            <state relative-caret-position="323">
+              <caret line="30" column="31" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="31" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="274">
+              <caret line="57" column="0" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -207,10 +157,10 @@
         <option value="$PROJECT_DIR$/app/modules/home/staticA.js" />
         <option value="$PROJECT_DIR$/app/modules/home/index.js" />
         <option value="$PROJECT_DIR$/routes/index.js" />
-        <option value="$PROJECT_DIR$/app/controllers/test.js" />
         <option value="$PROJECT_DIR$/node_modules/compression/index.js" />
         <option value="$PROJECT_DIR$/views/partials/modA.handlebars" />
         <option value="$PROJECT_DIR$/app/modules/home/modC.js" />
+        <option value="$PROJECT_DIR$/app/controllers/test.js" />
         <option value="$PROJECT_DIR$/app/modules/home/modA.js" />
         <option value="$PROJECT_DIR$/libs/pipe/Pagelet.js" />
         <option value="$PROJECT_DIR$/app/modules/home/modB.js" />
@@ -512,27 +462,27 @@
       <workItem from="1473681941674" duration="20342000" />
       <workItem from="1474895987511" duration="10922000" />
       <workItem from="1474959101992" duration="4000" />
-      <workItem from="1476721348625" duration="4604000" />
+      <workItem from="1476721348625" duration="13201000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35872000" />
+    <option name="totallyTimeSpent" value="44469000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1440" height="818" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24947146" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3278237" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3140496" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3292011" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39944905" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3278237" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -555,7 +505,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="12" />
+      <option name="time" value="17" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -621,57 +571,13 @@
         <state relative-caret-position="2941">
           <caret line="173" column="28" selection-start-line="173" selection-start-column="28" selection-end-line="173" selection-end-column="28" />
           <folding>
-            <marker date="1476762960000" expanded="true" signature="0:264" ph="/** @desc: Pagelets ...*/" />
-            <marker date="1476762960000" expanded="true" signature="1160:1203" ph="/** 样式 ...*/" />
-            <marker date="1476762960000" expanded="true" signature="2004:2108" ph="/** 暴露出的获取本pagelet数据的函数  readonly ...*/" />
-            <marker date="1476762960000" expanded="true" signature="3638:3738" ph="/** 获取渲染的原始数据 可以被覆盖，默认是通过service取接口数据，返回promise ...*/" />
-            <marker date="1476762960000" expanded="true" signature="3769:3936" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="3848:3901" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="3943:4057" ph="/** 处理通过getRenderData获取的原始数据 ...*/" />
-            <marker date="1476762960000" expanded="true" signature="4091:4119" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="4154:4182" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="4189:4291" ph="/** 执行pagelet的渲染, ...*/" />
-            <marker date="1476762960000" expanded="true" signature="4325:4778" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="4501:4595" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="4658:4770" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="4785:4902" ph="/** 渲染html-fragment 片段 ...*/" />
-            <marker date="1476762960000" expanded="true" signature="4933:5417" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="4986:5110" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="5049:5098" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="5182:5226" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="5289:5409" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="5452:6837" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="5568:6200" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="5923:5995" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6001:6087" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6218:6426" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6461:6616" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6506:6600" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6640:6829" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6880:7011" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6914:7003" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="7018:7070" ph="/** 生成数据块 ...*/" />
-            <marker date="1476762960000" expanded="true" signature="7116:7711" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="7172:7208" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="7233:7620" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="7753:7787" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="7794:7845" ph="/** 是否是基础模块 ...*/" />
-            <marker date="1476762960000" expanded="true" signature="7874:7947" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="7954:8016" ph="/** flush ...*/" />
-            <marker date="1476762960000" expanded="true" signature="8039:8076" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="8083:8239" ph="/** flush ...*/" />
-            <marker date="1476762960000" expanded="true" signature="8273:8417" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="8295:8362" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="8424:8540" ph="/** end flush ...*/" />
-            <marker date="1476762960000" expanded="true" signature="8566:9251" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="8764:8801" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="9258:9376" ph="/** catch error ...*/" />
-            <marker date="1476762960000" expanded="true" signature="9404:9450" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="9457:9520" ph="/** 获取依赖数据 ...*/" />
-            <marker date="1476762960000" expanded="true" signature="9564:9702" ph="/** 根据error Object 获取error json ...*/" />
-            <marker date="1476762960000" expanded="true" signature="9736:9862" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="9753:9856" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="10072:10221" ph="/** extend ...*/" />
+            <marker date="1476776863000" expanded="true" signature="2020:2148" ph="{...}" />
+            <marker date="1476776863000" expanded="true" signature="2111:2148" ph="{...}" />
+            <marker date="1476776863000" expanded="true" signature="9205:9235" ph="{...}" />
+            <marker date="1476776863000" expanded="true" signature="9388:9434" ph="{...}" />
+            <marker date="1476776863000" expanded="true" signature="9533:9541" ph="{...}" />
+            <marker date="1476776863000" expanded="true" signature="9720:9846" ph="{...}" />
+            <marker date="1476776863000" expanded="true" signature="9737:9840" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -753,57 +659,13 @@
         <state relative-caret-position="2941">
           <caret line="173" column="28" selection-start-line="173" selection-start-column="28" selection-end-line="173" selection-end-column="28" />
           <folding>
-            <marker date="1476762960000" expanded="true" signature="0:264" ph="/** @desc: Pagelets ...*/" />
-            <marker date="1476762960000" expanded="true" signature="1160:1203" ph="/** 样式 ...*/" />
-            <marker date="1476762960000" expanded="true" signature="2004:2108" ph="/** 暴露出的获取本pagelet数据的函数  readonly ...*/" />
-            <marker date="1476762960000" expanded="true" signature="3638:3738" ph="/** 获取渲染的原始数据 可以被覆盖，默认是通过service取接口数据，返回promise ...*/" />
-            <marker date="1476762960000" expanded="true" signature="3769:3936" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="3848:3901" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="3943:4057" ph="/** 处理通过getRenderData获取的原始数据 ...*/" />
-            <marker date="1476762960000" expanded="true" signature="4091:4119" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="4154:4182" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="4189:4291" ph="/** 执行pagelet的渲染, ...*/" />
-            <marker date="1476762960000" expanded="true" signature="4325:4778" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="4501:4595" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="4658:4770" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="4785:4902" ph="/** 渲染html-fragment 片段 ...*/" />
-            <marker date="1476762960000" expanded="true" signature="4933:5417" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="4986:5110" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="5049:5098" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="5182:5226" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="5289:5409" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="5452:6837" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="5568:6200" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="5923:5995" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6001:6087" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6218:6426" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6461:6616" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6506:6600" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6640:6829" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6880:7011" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6914:7003" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="7018:7070" ph="/** 生成数据块 ...*/" />
-            <marker date="1476762960000" expanded="true" signature="7116:7711" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="7172:7208" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="7233:7620" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="7753:7787" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="7794:7845" ph="/** 是否是基础模块 ...*/" />
-            <marker date="1476762960000" expanded="true" signature="7874:7947" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="7954:8016" ph="/** flush ...*/" />
-            <marker date="1476762960000" expanded="true" signature="8039:8076" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="8083:8239" ph="/** flush ...*/" />
-            <marker date="1476762960000" expanded="true" signature="8273:8417" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="8295:8362" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="8424:8540" ph="/** end flush ...*/" />
-            <marker date="1476762960000" expanded="true" signature="8566:9251" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="8764:8801" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="9258:9376" ph="/** catch error ...*/" />
-            <marker date="1476762960000" expanded="true" signature="9404:9450" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="9457:9520" ph="/** 获取依赖数据 ...*/" />
-            <marker date="1476762960000" expanded="true" signature="9564:9702" ph="/** 根据error Object 获取error json ...*/" />
-            <marker date="1476762960000" expanded="true" signature="9736:9862" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="9753:9856" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="10072:10221" ph="/** extend ...*/" />
+            <marker date="1476776863000" expanded="true" signature="2020:2148" ph="{...}" />
+            <marker date="1476776863000" expanded="true" signature="2111:2148" ph="{...}" />
+            <marker date="1476776863000" expanded="true" signature="9205:9235" ph="{...}" />
+            <marker date="1476776863000" expanded="true" signature="9388:9434" ph="{...}" />
+            <marker date="1476776863000" expanded="true" signature="9533:9541" ph="{...}" />
+            <marker date="1476776863000" expanded="true" signature="9720:9846" ph="{...}" />
+            <marker date="1476776863000" expanded="true" signature="9737:9840" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -845,57 +707,13 @@
         <state relative-caret-position="2278">
           <caret line="134" column="10" selection-start-line="134" selection-start-column="10" selection-end-line="134" selection-end-column="10" />
           <folding>
-            <marker date="1476762960000" expanded="true" signature="0:264" ph="/** @desc: Pagelets ...*/" />
-            <marker date="1476762960000" expanded="true" signature="1160:1203" ph="/** 样式 ...*/" />
-            <marker date="1476762960000" expanded="true" signature="2004:2108" ph="/** 暴露出的获取本pagelet数据的函数  readonly ...*/" />
-            <marker date="1476762960000" expanded="true" signature="3638:3738" ph="/** 获取渲染的原始数据 可以被覆盖，默认是通过service取接口数据，返回promise ...*/" />
-            <marker date="1476762960000" expanded="true" signature="3769:3936" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="3848:3901" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="3943:4057" ph="/** 处理通过getRenderData获取的原始数据 ...*/" />
-            <marker date="1476762960000" expanded="true" signature="4091:4119" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="4154:4182" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="4189:4291" ph="/** 执行pagelet的渲染, ...*/" />
-            <marker date="1476762960000" expanded="true" signature="4325:4778" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="4501:4595" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="4658:4770" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="4785:4902" ph="/** 渲染html-fragment 片段 ...*/" />
-            <marker date="1476762960000" expanded="true" signature="4933:5417" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="4986:5110" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="5049:5098" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="5182:5226" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="5289:5409" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="5452:6837" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="5568:6200" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="5923:5995" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6001:6087" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6218:6426" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6461:6616" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6506:6600" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6640:6829" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6880:7011" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6914:7003" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="7018:7070" ph="/** 生成数据块 ...*/" />
-            <marker date="1476762960000" expanded="true" signature="7116:7711" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="7172:7208" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="7233:7620" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="7753:7787" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="7794:7845" ph="/** 是否是基础模块 ...*/" />
-            <marker date="1476762960000" expanded="true" signature="7874:7947" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="7954:8016" ph="/** flush ...*/" />
-            <marker date="1476762960000" expanded="true" signature="8039:8076" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="8083:8239" ph="/** flush ...*/" />
-            <marker date="1476762960000" expanded="true" signature="8273:8417" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="8295:8362" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="8424:8540" ph="/** end flush ...*/" />
-            <marker date="1476762960000" expanded="true" signature="8566:9251" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="8764:8801" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="9258:9376" ph="/** catch error ...*/" />
-            <marker date="1476762960000" expanded="true" signature="9404:9450" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="9457:9520" ph="/** 获取依赖数据 ...*/" />
-            <marker date="1476762960000" expanded="true" signature="9564:9702" ph="/** 根据error Object 获取error json ...*/" />
-            <marker date="1476762960000" expanded="true" signature="9736:9862" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="9753:9856" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="10072:10221" ph="/** extend ...*/" />
+            <marker date="1476776863000" expanded="true" signature="2020:2148" ph="{...}" />
+            <marker date="1476776863000" expanded="true" signature="2111:2148" ph="{...}" />
+            <marker date="1476776863000" expanded="true" signature="9205:9235" ph="{...}" />
+            <marker date="1476776863000" expanded="true" signature="9388:9434" ph="{...}" />
+            <marker date="1476776863000" expanded="true" signature="9533:9541" ph="{...}" />
+            <marker date="1476776863000" expanded="true" signature="9720:9846" ph="{...}" />
+            <marker date="1476776863000" expanded="true" signature="9737:9840" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -953,13 +771,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="273">
           <caret line="202" column="14" selection-start-line="202" selection-start-column="14" selection-end-line="202" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="274">
-          <caret line="57" column="0" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1038,14 +849,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/test.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="31" column="2" selection-start-line="31" selection-start-column="2" selection-end-line="31" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/modules/home/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -1070,94 +873,66 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="274">
+          <caret line="57" column="0" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/modules/home/modC.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="30" selection-start-line="18" selection-start-column="30" selection-end-line="18" selection-end-column="30" />
+        <state relative-caret-position="340">
+          <caret line="20" column="10" selection-start-line="20" selection-start-column="10" selection-end-line="20" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="30" column="31" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="31" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/modules/home/modA.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="22" column="6" selection-start-line="22" selection-start-column="6" selection-end-line="22" selection-end-column="6" />
+        <state relative-caret-position="256">
+          <caret line="28" column="16" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/libs/pipe/Pagelet.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="177" column="7" selection-start-line="177" selection-start-column="7" selection-end-line="177" selection-end-column="7" />
+        <state relative-caret-position="204">
+          <caret line="111" column="9" selection-start-line="111" selection-start-column="9" selection-end-line="111" selection-end-column="9" />
           <folding>
-            <marker date="1476762960000" expanded="true" signature="0:264" ph="/** @desc: Pagelets ...*/" />
-            <marker date="1476762960000" expanded="true" signature="1160:1203" ph="/** 样式 ...*/" />
-            <marker date="1476762960000" expanded="true" signature="2004:2108" ph="/** 暴露出的获取本pagelet数据的函数  readonly ...*/" />
-            <marker date="1476762960000" expanded="true" signature="3638:3738" ph="/** 获取渲染的原始数据 可以被覆盖，默认是通过service取接口数据，返回promise ...*/" />
-            <marker date="1476762960000" expanded="true" signature="3769:3936" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="3848:3901" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="3943:4057" ph="/** 处理通过getRenderData获取的原始数据 ...*/" />
-            <marker date="1476762960000" expanded="true" signature="4091:4119" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="4154:4182" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="4189:4291" ph="/** 执行pagelet的渲染, ...*/" />
-            <marker date="1476762960000" expanded="true" signature="4325:4778" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="4501:4595" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="4658:4770" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="4785:4902" ph="/** 渲染html-fragment 片段 ...*/" />
-            <marker date="1476762960000" expanded="true" signature="4933:5417" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="4986:5110" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="5049:5098" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="5182:5226" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="5289:5409" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="5452:6837" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="5568:6200" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="5923:5995" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6001:6087" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6218:6426" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6461:6616" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6506:6600" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6640:6829" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6880:7011" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="6914:7003" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="7018:7070" ph="/** 生成数据块 ...*/" />
-            <marker date="1476762960000" expanded="true" signature="7116:7711" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="7172:7208" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="7233:7620" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="7753:7787" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="7794:7845" ph="/** 是否是基础模块 ...*/" />
-            <marker date="1476762960000" expanded="true" signature="7874:7947" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="7954:8016" ph="/** flush ...*/" />
-            <marker date="1476762960000" expanded="true" signature="8039:8076" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="8083:8239" ph="/** flush ...*/" />
-            <marker date="1476762960000" expanded="true" signature="8273:8417" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="8295:8362" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="8424:8540" ph="/** end flush ...*/" />
-            <marker date="1476762960000" expanded="true" signature="8566:9251" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="8764:8801" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="9258:9376" ph="/** catch error ...*/" />
-            <marker date="1476762960000" expanded="true" signature="9404:9450" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="9457:9520" ph="/** 获取依赖数据 ...*/" />
-            <marker date="1476762960000" expanded="true" signature="9564:9702" ph="/** 根据error Object 获取error json ...*/" />
-            <marker date="1476762960000" expanded="true" signature="9736:9862" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="9753:9856" ph="{...}" />
-            <marker date="1476762960000" expanded="true" signature="10072:10221" ph="/** extend ...*/" />
+            <marker date="1476776863000" expanded="true" signature="2020:2148" ph="{...}" />
+            <marker date="1476776863000" expanded="true" signature="2111:2148" ph="{...}" />
+            <marker date="1476776863000" expanded="true" signature="9205:9235" ph="{...}" />
+            <marker date="1476776863000" expanded="true" signature="9388:9434" ph="{...}" />
+            <marker date="1476776863000" expanded="true" signature="9533:9541" ph="{...}" />
+            <marker date="1476776863000" expanded="true" signature="9720:9846" ph="{...}" />
+            <marker date="1476776863000" expanded="true" signature="9737:9840" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/modules/home/modB.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="24" column="31" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="31" />
+        <state relative-caret-position="266">
+          <caret line="21" column="16" selection-start-line="21" selection-start-column="16" selection-end-line="21" selection-end-column="16" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/libs/pipe/BigPipe.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="341">
-          <caret line="542" column="0" selection-start-line="542" selection-start-column="0" selection-end-line="542" selection-end-column="0" />
+        <state relative-caret-position="391">
+          <caret line="145" column="31" selection-start-line="145" selection-start-column="31" selection-end-line="145" selection-end-column="31" />
           <folding />
         </state>
       </provider>

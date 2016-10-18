@@ -99,12 +99,23 @@ BigPipe.prototype = {
         this._cache = {};
         this.bootstrap(req, res, next);
         this.createPagelets();
+        this.start();
 
         this.once('end', function() {
-            bigpipe.layout.end();
+            // bigpipe.layout.end();
         });
 
         return this;
+    },
+
+    start: function() {
+        var bigpipe = this;
+
+        bigpipe._pagelets.forEach(function(pagelet, i) {
+            bigpipe.analyze(pagelet, function () {
+                pagelet.ready('ready');
+            });
+        });
     },
 
     /**
@@ -112,17 +123,25 @@ BigPipe.prototype = {
      * @return {[type]} [description]
      */
     analyze: function(pagelet, done) {
+
         var bigpipe = this;
         var waitMods = pagelet.wait || [];
         var waitModNames = waitMods.map(function(mod) {
+            if(typeof mod === 'string') {
+                return mod;
+            }
             return mod.prototype.name;
         });
+
+        logger.info('start analyze module', pagelet.name);
 
         Promise.map(waitModNames, function(modName) {
             return bigpipe.waitFor(modName);
         }).then(function() {
+            logger.info('analyze module done', pagelet.name);
             // pagelet.ready();
-            done.call(null, pagelet);
+
+            done.call(pagelet, pagelet);
             // pagelet的依赖处理完毕，已经ready
             // pagelet.ready();
             // render Promise
@@ -143,6 +162,8 @@ BigPipe.prototype = {
 
     waitFor: function(modName) {
         var bigpipe = this;
+        // 首先需要触发pagelet的start
+        bigpipe._cache[modName].get();
         return new Promise(function(resolve, reject) {
             // pagelet load and parse data ready
             bigpipe.on(modName + ':done', function(data) {
@@ -276,7 +297,7 @@ BigPipe.prototype = {
         });
 
         //refresh length + layout
-        bigpipe.length = _pagelets.length + 1;
+        bigpipe.length = _pagelets.length;
 
         return _pagelets;
 
@@ -311,7 +332,10 @@ BigPipe.prototype = {
      */
     renderLayout: function() {
         var bigpipe = this;
+        bigpipe.layout.ready('ready');
+        bigpipe.length++;
         logger.info('开始渲染layout脚手架模块');
+
         return this.layout.render().then(function(chunk) {
                 logger.info('渲染layout脚手架模块完成');
                 return bigpipe.layout.write(chunk).flush();
@@ -327,44 +351,23 @@ BigPipe.prototype = {
         var layout = this.layout;
 
         this.renderLayout().then(function() {
-            var done = function(pagelet) {
-                return pagelet
-                    .render()
-                    .then(function (chunk) {
-                        pagelet
-                            .write(chunk)
-                            .flush();
-                    }, function (errData) {
-                        logger.error('render Async failed', errData);
-                        // render error
-                    }).catch(function(error) {
-                        logger.error( 'render Async error', error);
-                    });
-            }
-            bigpipe._pagelets.forEach(function(pagelet, i) {
-                bigpipe.analyze(pagelet, done);
+            return Promise.map(bigpipe._pagelets, function(pagelet) {
+                // render Promise
+                return pagelet.render().then(function (chunk) {
+                    pagelet.write(chunk).flush();
+                    return chunk;
+                }, function (errData) {
+                    logger.error('render Async failed', errData);
+                    // render error
+                }).catch(function(error) {
+                    logger.error( 'render Async error', error);
+                });
+
+            }).then(function(data) {
+                layout.end();
+            }).catch(function(err) {
+                return bigpipe.catch(err);
             });
-            return null;
-            // // promise array
-            // var pageletArr = [];
-            //
-            // return Promise.map(bigpipe._pagelets, function(pagelet) {
-            //     // render Promise
-            //     return pagelet.render().then(function (chunk) {
-            //         pagelet.write(chunk).flush();
-            //     }, function (errData) {
-            //         logger.error('render Async failed', errData);
-            //         // render error
-            //     }).catch(function(error) {
-            //         logger.error( 'render Async error', error);
-            //     });
-            //
-            //     // pageletArr.push(render);
-            // }).then(function() {
-            //     layout.end();
-            // }).catch(function(err) {
-            //     return bigpipe.catch(err);
-            // });
 
         }).catch(function(err) {
             qmonitor.addCount(bigpipe.monitorKey + '_rendlayout_error');
@@ -404,12 +407,18 @@ BigPipe.prototype = {
             /**
              * [{key1: '..'}, {key1: '..'}]
              */
+            return mod.get().then(function (data) {
+                return data;
+            });
 
-            var temp = {};
-            temp[modName] = mod.get();
-            return temp;
+            // var temp = {};
+            // temp[modName] = mod.get();
+            // return temp;
         }).then(function(data) {
+            logger.record('获取API接口数据成功', data);
             bigpipe._json(data);
+        }, function (data) {
+            logger.record('获取API接口数据失败');
         }).catch(function(error) {
             logger.error('处理JSON数据接口错误', error);
             var errObj = bigpipe._getErrObj(error);
@@ -464,6 +473,7 @@ BigPipe.prototype = {
 
         // bigpipe._res.set('Content-Type', 'text/html; charset=utf-8');
         module.renderSnippet().then(function(snippet) {
+            logger.record('获取snippet成功，flush到客户端', snippet);
             module.end(snippet);
         }).catch(function(error) {
             logger.error('处理snippet数据错误', error);

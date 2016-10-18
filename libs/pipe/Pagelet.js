@@ -118,19 +118,34 @@ Pagelet.prototype = {
     //需要依赖其他模块
     wait: null,
 
-    /**
-     * 暴露出的获取本pagelet数据的函数  readonly
-     * @return {Obje1} parsed pagelet data {name: data}
-     */
     get: function() {
         var pagelet = this;
+        return this.ready()
+                .then(function() {
+                    return pagelet._get();
+                })
+                .then(function(data) {
+                    logger.info('数据处理成功，触发事件['+ pagelet.name +':done]', data);
+                    pagelet.bigpipe.emit(pagelet.name + ':done', data);
+                    return data;
+                })
+    },
+
+    /**
+     * 暴露出的获取本pagelet数据的函数  readonly
+     * @return {Object} parsed pagelet data {name: data}
+     */
+    _get: function() {
+
+        var pagelet = this;
+
+        logger.info('开始获取数据['+ pagelet.name +']');
 
         // 避免重复获取数据
         if(pagelet._cache) {
             logger.info('使用数据缓存['+ pagelet.name +']', pagelet._cache);
-            return Promise.relove(pagelet._cache);
+            return Promise.resolve(pagelet._cache);
         }
-
 
         var getOriginData = this.getRenderData();
 
@@ -139,9 +154,7 @@ Pagelet.prototype = {
         }
 
         return getOriginData.then(function(json) {
-            // var parsed = {};
-            // parsed[pagelet.name] = pagelet._beforeRender(json);
-            // return parsed;
+            logger.record('获取模块数据成功['+ pagelet.name +']', json);
             var data = pagelet.beforeRender(json);
             pagelet._cache = data;
             return data;
@@ -158,27 +171,24 @@ Pagelet.prototype = {
     },
 
     getStore: function() {
-        debugger
         return this.bigpipe._store;
     },
 
-    ready: function() {
-        var _ready = null;
-        return function() {
-            return _ready || Promise.resolve(null);
+    ready: function(done) {
+        if(!this._ready) {
+            this._ready = new Promise(function(resolve, reject) {
+                this.once('ready', function() {
+                    resolve(null);
+                });
+            }.bind(this))
         }
-    },
 
-    start: function() {
-        var pagelet = this;
-        return new Promise(function(resolve, reject){
-            pagelet.once('ready', function(data) {
-                resolve(data);
-            });
-        })
-    },
+        if(done) {
+            this.emit('ready');
+        }
 
-    // get
+        return this._ready;
+    },
 
     /**
      * 获取渲染的原始数据 可以被覆盖，默认是通过service取接口数据，返回promise
@@ -234,12 +244,6 @@ Pagelet.prototype = {
     renderSnippet: function() {
         var pagelet = this;
 
-        if(this.wait) {
-            return this.once(this.wait + ':done', function() {
-                pagelet.render();
-            });
-        }
-
         return this._getRenderHtml()
             .then(function(html) {
                 return html;
@@ -251,16 +255,12 @@ Pagelet.prototype = {
             });
     },
 
-
     _getRenderHtml: function() {
         var pagelet = this;
         var renderData;
 
         return this.get()
             .then(function(parsed) {
-                logger.info('数据处理成功，触发事件['+ pagelet.name +':done]');
-                pagelet.bigpipe.emit(pagelet.name + ':done', parsed);
-
                 var templatePath;
 
                 renderData = Object.assign({}, parsed);
@@ -366,6 +366,7 @@ Pagelet.prototype = {
      * @return {[type]}       [description]
      */
     end: function(chunk) {
+
         var pagelet = this;
 
         if (chunk) this.write(chunk);
@@ -380,14 +381,11 @@ Pagelet.prototype = {
         //
         // Everything is processed, close the connection and clean up references.
         //
-        // this.bigpipe.flush(function close(error) {
-        //     if (error) return pagelet.catch(error, true);
-        //     logger.info('Bigpipe end @', new Date());
-        //     pagelet.res.end('</html>');
-        // });
-
-        logger.info('Bigpipe end @', new Date());
-        pagelet.res.end('</html>');
+        this.bigpipe.flush(function close(error) {
+            if (error) return pagelet.catch(error, true);
+            logger.info('Bigpipe end @', new Date());
+            pagelet.res.end('</html>');
+        });
 
         return true;
     },

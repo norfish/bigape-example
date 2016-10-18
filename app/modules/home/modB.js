@@ -18,7 +18,6 @@ module.exports = Pagelet.extend({
     wait: [modC],
 
     beforeRender: function(data) {
-        debugger
         var store = this.getStore();
         return {
             msg: 'parsed mod-b',

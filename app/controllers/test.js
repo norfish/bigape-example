@@ -25,7 +25,8 @@ exports.renderJSON = function(req, res, next) {
     return HomeAction
         .usePagelets({
             modA: modA,
-            modB: modB
+            modB: modB,
+            modC: modC
         })
         .router(req, res, next)
         .renderJSON(['modA', 'modB']);
@@ -34,8 +35,8 @@ exports.renderJSON = function(req, res, next) {
 exports.renderSnippet = function(req, res, next) {
     return HomeAction
         .usePagelets({
-            modA: modA
+            modC: modC
         })
         .router(req, res, next)
-        .renderSnippet('modA');
+        .renderSnippet('modC');
 };
