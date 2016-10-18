@@ -5,19 +5,27 @@
  */
 
 
- var Pagelet = require('../../../libs/pipe/Pagelet');
+var Pagelet = require('../../../libs/pipe/Pagelet');
 
- module.exports = Pagelet.extend({
-     name: 'modC',
+module.exports = Pagelet.extend({
+    name: 'modC',
 
-     domID: 'mod-c',
+    domID: 'mod-c',
 
-     template: 'modC',
+    template: 'modC',
 
-     beforeRender: function(data) {
-         var store = this.getStore();
-         return {
-             msg: 'parsed mod-c'
-         }
-     }
- });
+    beforeRender: function(data) {
+        var store = this.getStore();
+        return {
+            msg: 'parsed mod-c'
+        }
+    },
+
+    getRenderData: function() {
+        return new Promise(function(resolve, reject) {
+            setTimeout(function() {
+                resolve('Async mod-C data');
+            }, 1000)
+        })
+    }
+});

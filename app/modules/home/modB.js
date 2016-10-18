@@ -7,6 +7,7 @@
 
 var Pagelet = require('../../../libs/pipe/Pagelet');
 var modC = require('./modC');
+var modA = require('./modA');
 
 module.exports = Pagelet.extend({
     name: 'modB',
@@ -15,14 +16,14 @@ module.exports = Pagelet.extend({
 
     template: 'modB',
 
-    wait: [modC],
+    wait: [modA, modC],
 
     beforeRender: function(data) {
         var store = this.getStore();
         return {
-            msg: 'parsed mod-b',
-            dep: store.modC.msg,
-            info: data
+            msg: 'parsed mod-b' + data.info,
+            dep: store.modA.msg + '||' + store.modC.msg,
+            info: store.modA.info
         }
     },
 
@@ -30,7 +31,7 @@ module.exports = Pagelet.extend({
         return new Promise(function(resolve, reject) {
             setTimeout(function() {
                 resolve('Async mod-B data');
-            }, 200)
+            }, 500)
         })
     }
 });
