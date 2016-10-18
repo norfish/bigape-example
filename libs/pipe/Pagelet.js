@@ -2,17 +2,31 @@
  * @desc: Pagelets
  * @authors: yongxiang.li
  * @date: 2016-08-03 20:32:19
+ *
+ * getRenderData
+ *
+ *
+ * lifecycle
+ *
+ * getRenderData
+ * beforeRender(json)
+ * afterRender({
+ * 	html: html,
+ * 	renderData: renderData
+ * })
+ *
+ * getPipeData(json) renderData
  */
 
 'use strict';
 
-var util = require('util');
 var EventEmitter = require('events').EventEmitter;
 var _ = require('lodash');
 var co = require('co');
 var qtemplate = require('@qnpm/q-template');
 var qmonitor = require('@qnpm/q-monitor');
 var logger = require('@qnpm/q-logger');
+var Promise = require('bluebird');
 
 function Pagelet(name, options) {
     // pagelet uid
@@ -29,6 +43,10 @@ function Pagelet(name, options) {
 
     //
     this._bootstrap = options.bootstrap;
+
+    this._dependData = {};
+
+    this._cache = null;
 
     // 初始化
     this.initialize.apply(this);
@@ -52,7 +70,7 @@ Pagelet.prototype = {
     // 渲染模式 html json
     mode: 'html',
 
-    // 脚本
+    // 脚本x`x``
     scripts: '',
 
     /**
@@ -65,9 +83,16 @@ Pagelet.prototype = {
 
     _children: null,
 
+    // 是否在依赖其他模块
     _isWaiting: true,
 
+    // require: null,
+
     service: function() {
+        return this.getService();
+    },
+
+    getService: function() {
         return new Promise(function(resolve, reject) {
             setTimeout(function() {
                 resolve({
@@ -78,7 +103,6 @@ Pagelet.prototype = {
     },
 
     initialize: function() {
-        this._isWaiting = !!this.wait;
         return this;
     },
 
@@ -94,36 +118,67 @@ Pagelet.prototype = {
     //需要依赖其他模块
     wait: null,
 
-    // depend: function() {
-    //     this.on
-    // },
-
     /**
      * 暴露出的获取本pagelet数据的函数  readonly
-     * @return {Promise} Object
+     * @return {Obje1} parsed pagelet data {name: data}
      */
     get: function() {
         var pagelet = this;
-        return this._getRenderData().then(function(json) {
-            var parsed = {};
-            parsed[pagelet.name] = pagelet.beforeRender(json);
-            return parsed;
+
+        // 避免重复获取数据
+        if(pagelet._cache) {
+            logger.info('使用数据缓存['+ pagelet.name +']', pagelet._cache);
+            return Promise.relove(pagelet._cache);
+        }
+
+
+        var getOriginData = this.getRenderData();
+
+        if(!this.isPromise(getOriginData)) {
+            getOriginData = Promise.resolve(getOriginData);
+        }
+
+        return getOriginData.then(function(json) {
+            // var parsed = {};
+            // parsed[pagelet.name] = pagelet._beforeRender(json);
+            // return parsed;
+            var data = pagelet.beforeRender(json);
+            pagelet._cache = data;
+            return data;
+
+        }, function(error) {
+            logger.error('获取pagelet数据失败', pagelet.name, error);
+            return pagelet._getErrObj(error);
+
+        }).catch(function(error) {
+            qmonitor.addCount('module_handler_error');
+            logger.error('获取pagelet数据异常', pagelet.name, error);
+            return pagelet._getErrObj(error);
         });
     },
 
-    /**
-     * 获取渲染的原始数据 readonly
-     * @return {Object} Promise
-     */
-    _getRenderData: function() {
-        var data = this.getRenderData();
-
-        if(this.isPromise(data)) {
-            return data;
-        }
-
-        return Promise.resolve(data);
+    getStore: function() {
+        debugger
+        return this.bigpipe._store;
     },
+
+    ready: function() {
+        var _ready = null;
+        return function() {
+            return _ready || Promise.resolve(null);
+        }
+    },
+
+    start: function() {
+        var pagelet = this;
+        return new Promise(function(resolve, reject){
+            pagelet.once('ready', function(data) {
+                resolve(data);
+            });
+        })
+    },
+
+    // get
 
     /**
      * 获取渲染的原始数据 可以被覆盖，默认是通过service取接口数据，返回promise
@@ -158,24 +213,11 @@ Pagelet.prototype = {
     render: function(renderData) {
         var pagelet = this;
 
-        if(this.wait && this._isWaiting) {
-            logger.info('需要依赖其他模块', this.wait);
-            return new Promise(function(resolve, reject) {
-                pagelet.bigpipe.once(pagelet.wait + ':done', function(dependData) {
-                    logger.record('获取到依赖数据', dependData);
-                    pagelet._isWaiting = false;
-                    pagelet.render().then(function(data) {
-                        resolve(data);
-                    });
-                });
-            });
-        }
-
         logger.info('开始渲染Pagelet模块['+ pagelet.name +']@', new Date());
 
         return this._getRenderHtml()
-            .then(function(html) {
-                return pagelet._createChunk(html);
+            .then(function(options) {
+                return pagelet._createChunk(options.html, options.renderData);
             })
             // handle error
             .catch(function(err) {
@@ -212,17 +254,18 @@ Pagelet.prototype = {
 
     _getRenderHtml: function() {
         var pagelet = this;
+        var renderData;
 
-        return this._getRenderData()
-            .then(function(json) {
-                // 预处理
-                return pagelet.beforeRender(json);
-            })
+        return this.get()
             .then(function(parsed) {
                 logger.info('数据处理成功，触发事件['+ pagelet.name +':done]');
                 pagelet.bigpipe.emit(pagelet.name + ':done', parsed);
 
                 var templatePath;
+
+                renderData = Object.assign({}, parsed);
+                // ext data
+                pagelet._addExtRenderData(parsed);
 
                 if(pagelet.isBootstrap()) {
                     templatePath = pagelet.template;
@@ -230,30 +273,60 @@ Pagelet.prototype = {
                     templatePath = 'partials/' + pagelet.template;
                 }
                 return qtemplate.render(templatePath, parsed);
+
+            // 模板渲染reject时候，渲染错误信息
+            }, function(error) {
+                logger.error('渲染pagelet失败', pagelet.name, error);
+                var errorObj = pagelet._getErrObj(error);
+                return qtemplate.render('partials/error', errorObj);
             })
             .then(function(html) {
-                return pagelet.afterRender(html);
+                return pagelet.afterRender({
+                    html: html,
+                    renderData: renderData
+                });
+            }).catch(function(error) {
+                qmonitor.addCount('module_render_error');
+                logger.error('渲染pagelet异常', pagelet.name, error);
+                return pagelet._getErrObj(error);
             });
+    },
+
+    _addExtRenderData: function(parsed) {
+        return _.assign(parsed, {
+            locals: this.res.locals,
+            dependData: this._dependData
+        });
     },
 
     /**
      * 生成数据块
      * @param {String} html
      */
-    _createChunk: function(html) {
-        var chunkObj = {
-            id: this.name,
-            html: html,
-            scripts: this.scripts,
-            styles: this.styles,
-            domID: this.domID
-        };
-
+    _createChunk: function(html, renderData) {
+        // 如果是主框架则直接返回
         if(this.isBootstrap()) {
             return html;
         }
 
+        var chunkObj = {
+            id: this.name,
+            html: html,
+            scripts: this.scripts,
+            data: this.getPipeData(renderData),
+            styles: this.styles,
+            domID: this.domID,
+            modID: this.name,
+            pageletDataKey: this.pageletDataKey,
+            dataEventName: this.dataEventName,
+            pageletEventName: this.pageletEventName
+        };
+
         return '<script>BigPipe.onArrive('+ JSON.stringify(chunkObj) +')</script>'
+    },
+
+    getPipeData: function (renderData) {
+        return renderData;
     },
 
     /**
@@ -307,12 +380,14 @@ Pagelet.prototype = {
         //
         // Everything is processed, close the connection and clean up references.
         //
-        this.bigpipe.flush(function close(error) {
-            if (error) return pagelet.catch(error, true);
+        // this.bigpipe.flush(function close(error) {
+        //     if (error) return pagelet.catch(error, true);
+        //     logger.info('Bigpipe end @', new Date());
+        //     pagelet.res.end('</html>');
+        // });
 
-            logger.info('Bigpipe end @', new Date());
-            pagelet.res.end('</html>');
-        });
+        logger.info('Bigpipe end @', new Date());
+        pagelet.res.end('</html>');
 
         return true;
     },
@@ -331,6 +406,22 @@ Pagelet.prototype = {
      * @return {[type]} [description]
      */
     _getDepData: function() {
+
+    },
+
+    /**
+     * 根据error Object 获取error json
+     * @param  {Object} error error stack 或者Object
+     * @return {Object}       error json
+     */
+    _getErrObj: function (error) {
+        return {
+            status: error.status || 502,
+            message: error.message || '系统繁忙,请稍后重试'
+        }
+    },
+
+    _renderError: function(error) {
 
     },
 
@@ -414,10 +505,7 @@ Pagelet.create = (function() {
             name = 'defaults';
         }
 
-        if(!__instance[name]) {
-            __instance[name] = new this(name, options);
-        }
-
+        __instance[name] = new this(name, options);
         return __instance[name];
     }
 })();

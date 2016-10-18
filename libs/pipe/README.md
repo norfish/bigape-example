@@ -14,6 +14,11 @@ _ pagelets
 - renderSnippet
 - renderJSON
 
+waitForAll: done => mark ready
+
+start -> check ready -> ready -> do render
+start -> check ready -> not ready -> wait -> ready -> do render
+
 Pagelet
 ## 实例
 - req
@@ -48,10 +53,6 @@ Pagelet
 
 router
 
-
-
-
-
 ## static
 - extend
 
@@ -67,3 +68,7 @@ pagelet = new Pagelet({
   req: req,
   res: res
 });
+
+
+// depend
+// data depend

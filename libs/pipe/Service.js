@@ -57,6 +57,13 @@ module.exports = {
         return true;
     },
 
+<<<<<<< HEAD
+=======
+    beforeQueryValid: function(req, res) {
+        return true;
+    },
+
+>>>>>>> o/master
     /**
      * 初始化
      */
@@ -81,10 +88,23 @@ module.exports = {
      * @returns {string}
      */
     getURL: function(req, res){
+<<<<<<< HEAD
         if (this.url.indexOf('?') > -1) {
             return this.url + '&' + '_channel=' + (req.cookies['_plat_source'] || '');
         }
         return this.url + '?' + '_channel=' + (req.cookies['_plat_source'] || '');
+=======
+        return this.url;
+    },
+
+    _getURL: function(req, res) {
+        var url = this.getURL(req, res);
+
+        if (url.indexOf('?') > -1) {
+            return url + '&' + '_channel=' + (req.cookies['_plat_source'] || '');
+        }
+        return url + '?' + '_channel=' + (req.cookies['_plat_source'] || '');
+>>>>>>> o/master
     },
 
     /**
@@ -140,14 +160,24 @@ module.exports = {
         var self = this;
 
         return qRequest(
+<<<<<<< HEAD
             this.getURL(req, res),
+=======
+            this._getURL(req, res),
+>>>>>>> o/master
             {
                 data : this._getParams(req, res),
                 qmonitor: this.getQMonitor(req, res),
                 method: this.method,
                 postType: 'json',
+<<<<<<< HEAD
                 // proxy: 'http://127.0.0.1:10086',
                 timeout: this.timeout || 30000,
+=======
+                // proxy: 'http://127.0.0.1:8888',
+                timeout: this.timeout || 30000,
+                headers: this._getHeaders(req, res),
+>>>>>>> o/master
                 jsonValid: function(data) {
                     return self.validData(data, req, res);
                 }
@@ -159,6 +189,21 @@ module.exports = {
         });
     },
 
+<<<<<<< HEAD
+=======
+    _getHeaders: function (req, res) {
+        var cookies = req.cookies,
+            headers = req.headers;
+
+        return {
+            uid: cookies['_uc_uid'],
+            channel: cookies['_plat_source'] || 'jiulvxing',
+            ip: (headers['x-real-ip'] || headers['ip']).replace('::ffff:', ''),
+            plat: 'touch'
+        }
+    },
+
+>>>>>>> o/master
     // 数据格式预处理
     _preParse: function(json) {
         var bstatus = json.bstatus;

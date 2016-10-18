@@ -5,12 +5,12 @@
  *
  * TODO
  * 1. static module
- * 2.
+ * --2. pagelet-data support--
+ * 3. error catch
  */
 
 'use strict';
 
-var util = require('util');
 var _ = require('lodash');
 var EventEmitter = require('events').EventEmitter;
 var Pagelet = require('./Pagelet');
@@ -31,13 +31,20 @@ function BigPipe(name, options) {
     // pagelet 缓存
     this._cache = {};
 
-    this.layout = null;
+    // pagelet cache data
+    this._store = {};
 
     // pagelet module list
     this.pagelets = options.pagelets || {};
 
     // layout bootstrap
-    this._bootstrap = options._bootstrap || {};
+    this._bootstrap = options.bootstrap || {};
+
+    // monitor key
+    this.qmonitor = options.qmonitor;
+
+    // 实例化的layout页面
+    this.layout = null;
 
     // 实例化的页面片段集合
     this._pagelets = [];
@@ -51,7 +58,7 @@ function BigPipe(name, options) {
     this._next = null;
 
     // 所有的一级 pagelet 数量
-    this.length = Object.keys(options.pagelets).length || 1;
+    this.length = 1; //Object.keys(options.pagelets).length || 1;
 
     // this.initialize.apply(this, options);
 }
@@ -65,18 +72,96 @@ BigPipe.prototype = {
         return this;
     },
 
+    /**
+     * 覆盖bigpipe的pagelet模块
+     * @param  {Object} pageletsObj 模块map
+     * @return {this}
+     */
     usePagelets: function (pageletsObj) {
         this.pagelets = pageletsObj;
         return this;
     },
 
+    // same with usePagelets
+    pipe: function(pageletsObj) {
+        this.pagelets = pageletsObj;
+        return this;
+    },
+
+    /**
+     * route 请求，每次处理新请求，需要更新bigpipe和对于模块的req,res,next
+     * @return {this}
+     */
     router: function(req, res, next) {
+        var bigpipe = this;
         logger.info('开始Bigpip, start router使用模块为['+ Object.keys(this.pagelets).join('|')+']');
+        qmonitor.addCount(this.qmonitor + '_page_visit');
         this._cache = {};
         this.bootstrap(req, res, next);
         this.createPagelets();
 
+        this.once('end', function() {
+            bigpipe.layout.end();
+        });
+
         return this;
+    },
+
+    /**
+     * 分析模块间的依赖管理，并处理依赖
+     * @return {[type]} [description]
+     */
+    analyze: function(pagelet, done) {
+        var bigpipe = this;
+        var waitMods = pagelet.wait || [];
+        var waitModNames = waitMods.map(function(mod) {
+            return mod.prototype.name;
+        });
+
+        Promise.map(waitModNames, function(modName) {
+            return bigpipe.waitFor(modName);
+        }).then(function() {
+            // pagelet.ready();
+            done.call(null, pagelet);
+            // pagelet的依赖处理完毕，已经ready
+            // pagelet.ready();
+            // render Promise
+            // return pagelet
+            //     .render()
+            //     .then(function (chunk) {
+            //         pagelet
+            //             .write(chunk)
+            //             .flush();
+            //     }, function (errData) {
+            //         logger.error('render Async failed', errData);
+            //         // render error
+            //     }).catch(function(error) {
+            //         logger.error( 'render Async error', error);
+            //     });
+        });
+    },
+
+    waitFor: function(modName) {
+        var bigpipe = this;
+        return new Promise(function(resolve, reject) {
+            // pagelet load and parse data ready
+            bigpipe.on(modName + ':done', function(data) {
+                bigpipe._store[modName] = data;
+                resolve({
+                    name: modName,
+                    data: data
+                });
+            });
+
+            // pagelet处理数据失败
+            bigpipe.on(modName + ':fail', function(data) {
+                bigpipe._store[modName] = data;
+                reject({
+                    name: modName,
+                    data: data
+                });
+            });
+        });
     },
 
     /**
@@ -129,20 +214,25 @@ BigPipe.prototype = {
             return q.name;
         }).join('&');
 
-        if (data.length) {
-            logger.record('info: flush pagelet ['+ pageletName +'] data {{', data.toString(), '}}');
+        if(data.length) {
+            logger.record('info: flush pagelet ['+ pageletName +'] data {{', /*data.toString(),*/'暂不记录}}');
             this._res.write(
-                data
+                data,
+                true,
+                this.emit('done')
             );
         }
 
-        //
-        // Optional write confirmation, it got added in more recent versions of
-        // node, so if it's not supported we're just going to call the callback
-        // our selfs.
         // response.write(chunk[, encoding][, callback])
-        if (this._res.write.length !== 3 || !data.length) {
+        // 如果write时候没有传回调，可以手动调用
+        if(this._res.write.length !== 3 || !data.length) {
             this.emit('done');
+        }
+
+        // 所有pagelet都已经从队列中输出
+        if(!this.length) {
+            this.emit('done');
+            this.emit('end');
         }
 
         this.clearQueue();
@@ -176,6 +266,7 @@ BigPipe.prototype = {
                 res: bigpipe._res,
                 next: bigpipe._next,
                 query: bigpipe._query,
+                bootstrap: bigpipe.layout,
                 bigpipe: bigpipe
             }
 
@@ -184,8 +275,8 @@ BigPipe.prototype = {
             _pagelets.push(newPagelet);
         });
 
-        //refresh length
-        bigpipe.length = _pagelets.length;
+        //refresh length + layout
+        bigpipe.length = _pagelets.length + 1;
 
         return _pagelets;
 
@@ -203,7 +294,7 @@ BigPipe.prototype = {
         this._res = res;
         this._next = next;
 
-        this.layout = this._bootstrap.create(this._bootstrap.prototype.name, {
+        this.layout = this._bootstrap.create('layout', {
             req: this._req,
             res: this._res,
             next: this._next,
@@ -214,6 +305,10 @@ BigPipe.prototype = {
 
     },
 
+    /**
+     * 渲染layout页面
+     * @return {Promise}
+     */
     renderLayout: function() {
         var bigpipe = this;
         logger.info('开始渲染layout脚手架模块');
@@ -223,34 +318,73 @@ BigPipe.prototype = {
             });
     },
 
+    /**
+     * 异步渲染pagelets
+     * @return {Object} Promise
+     */
     renderAsync: function() {
         var bigpipe = this;
+        var layout = this.layout;
+
         this.renderLayout().then(function() {
-            // promise array
-            var pageletArr = [];
-
-            bigpipe._pagelets.forEach(function(pagelet) {
-                // render Promise
-                var render = pagelet.render().then(function (chunk) {
-                    pagelet.write(chunk).flush();
-                }, function (errData) {
-                    // render error
-                }).then(function() {
-                    pagelet.end();
-                });
-
-                pageletArr.push(render);
+            var done = function(pagelet) {
+                return pagelet
+                    .render()
+                    .then(function (chunk) {
+                        pagelet
+                            .write(chunk)
+                            .flush();
+                    }, function (errData) {
+                        logger.error('render Async failed', errData);
+                        // render error
+                    }).catch(function(error) {
+                        logger.error( 'render Async error', error);
+                    });
+            }
+            bigpipe._pagelets.forEach(function(pagelet, i) {
+                bigpipe.analyze(pagelet, done);
             });
+            return null;
+            // // promise array
+            // var pageletArr = [];
+            //
+            // return Promise.map(bigpipe._pagelets, function(pagelet) {
+            //     // render Promise
+            //     return pagelet.render().then(function (chunk) {
+            //         pagelet.write(chunk).flush();
+            //     }, function (errData) {
+            //         logger.error('render Async failed', errData);
+            //         // render error
+            //     }).catch(function(error) {
+            //         logger.error( 'render Async error', error);
+            //     });
+            //
+            //     // pageletArr.push(render);
+            // }).then(function() {
+            //     layout.end();
+            // }).catch(function(err) {
+            //     return bigpipe.catch(err);
+            // });
 
         }).catch(function(err) {
+            qmonitor.addCount(bigpipe.monitorKey + '_rendlayout_error');
             bigpipe.catch(err);
         });
     },
 
+    /**
+     * 同步渲染 pagelet 模块
+     * @return {[type]} [description]
+     */
     renderSync: function() {
 
     },
 
+    /**
+     * 渲染模块的json数据
+     * @param  {Array} modules 需要渲染的模块名称数组
+     * @return {Promise}         获取json数据并返回到客户端
+     */
     renderJSON: function(modules) {
 
         var bigpipe = this;
@@ -264,9 +398,16 @@ BigPipe.prototype = {
 
         logger.info('开始处理JSON接口数据, 模块['+ modules.join(' | ') +']');
 
-        Promise.map(modules, function(mod) {
-            mod = bigpipe._cache[mod];
-            return mod.get();
+        Promise.map(modules, function(modName) {
+
+            var mod = bigpipe._cache[modName];
+            /**
+             * [{key1: '..'}, {key1: '..'}]
+             */
+
+            var temp = {};
+            temp[modName] = mod.get();
+            return temp;
         }).then(function(data) {
             bigpipe._json(data);
         }).catch(function(error) {
@@ -277,8 +418,38 @@ BigPipe.prototype = {
 
     },
 
+    renderSingleJSON: function (modName) {
+        var bigpipe = this;
+        if(!modName) {
+            logger.error('处理失败,没有传入需要处理的模块');
+            bigpipe._json({
+                status: 500,
+                message: '未获取到数据'
+            });
+        }
+
+        logger.info('开始处理JSON接口数据, 模块['+ modName +']');
+
+        var mod = bigpipe._cache[modName];
+
+        return mod.get().then(function(data) {
+            bigpipe._jsonSuc(data);
+        }).catch(function(error) {
+            logger.error('处理JSON数据接口错误', error);
+            var errObj = bigpipe._getErrObj(error);
+            bigpipe._json(errObj);
+        });
+
+    },
+
+    /**
+     * 渲染html片段
+     * @param  {string} moduleName 需要渲染的模块名称
+     * @return {Promise}            [description]
+     */
     renderSnippet: function(moduleName) {
         var bigpipe = this;
+
         if(!moduleName) {
             logger.error('处理失败,没有传入需要处理的模块');
             this._json({
@@ -294,7 +465,26 @@ BigPipe.prototype = {
         // bigpipe._res.set('Content-Type', 'text/html; charset=utf-8');
         module.renderSnippet().then(function(snippet) {
             module.end(snippet);
+        }).catch(function(error) {
+            logger.error('处理snippet数据错误', error);
+            var errObj = bigpipe._getErrObj(error);
+            bigpipe._json(errObj);
         });
+    },
+
+    // 用户完全自定义的renderService
+    render: function() {
+        /**
+         * do something
+         */
+    },
+
+    _jsonSuc: function(json) {
+        return this._json({
+            status: 0,
+            message: 'success',
+            data: json
+        })
     },
 
     /**
@@ -303,7 +493,7 @@ BigPipe.prototype = {
      */
     _json: function(data) {
         if(!data || _.isPlainObject(data)) {
-            this._res.json(data);
+            return this._res.json(data);
         }
 
         data = data.reduce(function (pre, cur) {
@@ -329,8 +519,13 @@ BigPipe.prototype = {
         }
     },
 
+    /**
+     * 统一异常处理
+     * @param  {Object} err error stack Object 或者是error Object
+     * @return {[type]}     [description]
+     */
     catch: function(err) {
-        console.error('error', err)
+        logger.error('catch error::', err)
     }
 };
 
