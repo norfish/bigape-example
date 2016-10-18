@@ -9,7 +9,7 @@ var Pagelet = require('../../../libs/pipe/Pagelet');
 var Layout = Pagelet.extend({
     name: 'layout',
 
-    template: 'pages/home',
+    template: 'home',
 });
 
 module.exports = Layout;

@@ -30,7 +30,7 @@ function BigPipe(name, options) {
     this.options = options;
 
     // pagelet 缓存
-    this._cache = {};
+    this._pageletCache = {};
 
     // pagelet cache data
     this.store = new Store(options.storeID || 'store');
@@ -39,13 +39,13 @@ function BigPipe(name, options) {
     this.pagelets = options.pagelets || {};
 
     // layout bootstrap
-    this._bootstrap = options.bootstrap || {};
+    this.layout = options.layout || options.bootstrap || {};
 
     // monitor key
     this.qmonitor = options.qmonitor;
 
     // 实例化的layout页面
-    this.layout = null;
+    this._layout = null;
 
     // 实例化的页面片段集合
     this._pagelets = [];
@@ -108,7 +108,7 @@ BigPipe.prototype = {
 
     clear: function() {
         this.store.clear();
-        this._cache = {};
+        this._pageletCache = {};
     },
 
     start: function() {
@@ -156,7 +156,7 @@ BigPipe.prototype = {
     waitFor: function(modName) {
         var bigpipe = this;
         // 首先需要触发pagelet的start
-        bigpipe._cache[modName].get();
+        bigpipe._pageletCache[modName].get();
 
         return new Promise(function(resolve, reject) {
             // pagelet load and parse data ready
@@ -280,12 +280,12 @@ BigPipe.prototype = {
                 res: bigpipe._res,
                 next: bigpipe._next,
                 query: bigpipe._query,
-                bootstrap: bigpipe.layout,
+                layout: bigpipe._layout,
                 bigpipe: bigpipe
             }
 
             var newPagelet = pagelet.create(name, options);
-            bigpipe._cache[name] = newPagelet;
+            bigpipe._pageletCache[name] = newPagelet;
             _pagelets.push(newPagelet);
         });
 
@@ -322,7 +322,7 @@ BigPipe.prototype = {
         this._res = res;
         this._next = next;
 
-        this.layout = this._bootstrap.create('layout', {
+        this._layout = this.layout.create('layout', {
             req: this._req,
             res: this._res,
             next: this._next,
@@ -339,13 +339,13 @@ BigPipe.prototype = {
      */
     renderLayout: function() {
         var bigpipe = this;
-        bigpipe.layout.ready('ready');
+        bigpipe._layout.ready('ready');
         bigpipe.length++;
         logger.info('开始渲染layout脚手架模块');
 
-        return this.layout.render().then(function(chunk) {
+        return this._layout.render().then(function(chunk) {
                 logger.info('渲染layout脚手架模块完成');
-                return bigpipe.layout.write(chunk).flush();
+                return bigpipe._layout.write(chunk).flush();
             });
     },
 
@@ -355,7 +355,7 @@ BigPipe.prototype = {
      */
     renderAsync: function() {
         var bigpipe = this;
-        var layout = this.layout;
+        var layout = this._layout;
 
         this.renderLayout().then(function() {
             return Promise.map(bigpipe._pagelets, function(pagelet) {
@@ -410,7 +410,7 @@ BigPipe.prototype = {
 
         Promise.map(modules, function(modName) {
 
-            var mod = bigpipe._cache[modName];
+            var mod = bigpipe._pageletCache[modName];
             /**
              * [{key1: '..'}, {key1: '..'}]
              */
@@ -446,7 +446,7 @@ BigPipe.prototype = {
 
         logger.info('开始处理JSON接口数据, 模块['+ modName +']');
 
-        var mod = bigpipe._cache[modName];
+        var mod = bigpipe._pageletCache[modName];
 
         return mod.get().then(function(data) {
             bigpipe._jsonSuc(data);
@@ -476,7 +476,7 @@ BigPipe.prototype = {
 
         logger.info('开始处理html snippet接口数据, 模块['+ moduleName +']');
 
-        var module = this._cache[moduleName];
+        var module = this._pageletCache[moduleName];
 
         // bigpipe._res.set('Content-Type', 'text/html; charset=utf-8');
         module.renderSnippet().then(function(snippet) {
