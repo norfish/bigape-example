@@ -12,31 +12,34 @@ var modC = require('../modules/home/modC');
 
 exports.render = function(req, res, next) {
     return HomeAction
-            .usePagelets({
-                modA: modA,
-                modB: modB,
-                modC: modC
-            })
+            // .usePagelets({
+            //     modA: modA,
+            //     modB: modB,
+            //     modC: modC
+            // })
+            .pipe([modA, modB, modC])
             .router(req, res, next)
             .renderAsync();
 };
 
 exports.renderJSON = function(req, res, next) {
     return HomeAction
-        .usePagelets({
-            modA: modA,
-            modB: modB,
-            modC: modC
-        })
+        // .usePagelets({
+        //     modA: modA,
+        //     modB: modB,
+        //     modC: modC
+        // })
+        .pipe([modA, modB])
         .router(req, res, next)
         .renderJSON(['modA', 'modB']);
 };
 
 exports.renderSnippet = function(req, res, next) {
     return HomeAction
-        .usePagelets({
-            modC: modC
-        })
+        // .usePagelets({
+        //     modC: modC
+        // })
+        .pipe([modC])
         .router(req, res, next)
         .renderSnippet('modC');
 };

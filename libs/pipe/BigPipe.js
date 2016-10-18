@@ -18,6 +18,7 @@ var co = require('co');
 var qmonitor = require('@qnpm/q-monitor');
 var logger = require('@qnpm/q-logger');
 var Promise = require('bluebird');
+var Store = require('./Store');
 
 function BigPipe(name, options) {
 
@@ -32,7 +33,7 @@ function BigPipe(name, options) {
     this._cache = {};
 
     // pagelet cache data
-    this._store = {};
+    this.store = new Store(options.storeID || 'store');
 
     // pagelet module list
     this.pagelets = options.pagelets || {};
@@ -66,6 +67,7 @@ function BigPipe(name, options) {
 BigPipe.prototype = {
     constructor: BigPipe,
 
+    // buffer encoding charset
     charset: 'utf-8',
 
     initialize: function(options) {
@@ -93,19 +95,20 @@ BigPipe.prototype = {
      * @return {this}
      */
     router: function(req, res, next) {
-        var bigpipe = this;
-        logger.info('开始Bigpip, start router使用模块为['+ Object.keys(this.pagelets).join('|')+']');
+        logger.info('开始Bigpip, start router使用模块为['+ getPageletsName(this.pagelets) +']');
         qmonitor.addCount(this.qmonitor + '_page_visit');
-        this._cache = {};
+        this.clear();
+
         this.bootstrap(req, res, next);
         this.createPagelets();
         this.start();
 
-        this.once('end', function() {
-            // bigpipe.layout.end();
-        });
-
         return this;
+    },
+
+    clear: function() {
+        this.store.clear();
+        this._cache = {};
     },
 
     start: function() {
@@ -119,8 +122,10 @@ BigPipe.prototype = {
     },
 
     /**
-     * 分析模块间的依赖管理，并处理依赖
-     * @return {[type]} [description]
+     * [function description]
+     * @param  {Object}   需要处理的の pagelet 实例
+     * @param  {Function} done    处理好依赖之后的回调
+     * @return {Object}           Promise
      */
     analyze: function(pagelet, done) {
 
@@ -133,41 +138,30 @@ BigPipe.prototype = {
             return mod.prototype.name;
         });
 
-        logger.info('start analyze module', pagelet.name);
+        logger.info('start analyze module', pagelet.name, '依赖模块['+ waitModNames.join("|") +']');
 
         Promise.map(waitModNames, function(modName) {
             return bigpipe.waitFor(modName);
         }).then(function() {
             logger.info('analyze module done', pagelet.name);
-            // pagelet.ready();
-
             done.call(pagelet, pagelet);
-            // pagelet的依赖处理完毕，已经ready
-            // pagelet.ready();
-            // render Promise
-            // return pagelet
-            //     .render()
-            //     .then(function (chunk) {
-            //         pagelet
-            //             .write(chunk)
-            //             .flush();
-            //     }, function (errData) {
-            //         logger.error('render Async failed', errData);
-            //         // render error
-            //     }).catch(function(error) {
-            //         logger.error( 'render Async error', error);
-            //     });
         });
     },
 
+    /**
+     * 等待依赖模块ready
+     * @param  {string} modName 模块名字
+     * @return {Object}         Promise
+     */
     waitFor: function(modName) {
         var bigpipe = this;
         // 首先需要触发pagelet的start
         bigpipe._cache[modName].get();
+
         return new Promise(function(resolve, reject) {
             // pagelet load and parse data ready
             bigpipe.on(modName + ':done', function(data) {
-                bigpipe._store[modName] = data;
+                bigpipe.store.set(modName, data);
                 resolve({
                     name: modName,
                     data: data
@@ -176,7 +170,7 @@ BigPipe.prototype = {
 
             // pagelet处理数据失败
             bigpipe.on(modName + ':fail', function(data) {
-                bigpipe._store[modName] = data;
+                bigpipe.store.set(modName, data);
                 reject({
                     name: modName,
                     data: data
@@ -236,11 +230,10 @@ BigPipe.prototype = {
         }).join('&');
 
         if(data.length) {
-            logger.record('info: flush pagelet ['+ pageletName +'] data {{', /*data.toString(),*/'暂不记录}}');
+            logger.record('info: flush pagelet ['+ pageletName +'] data {{', data.toString(),'暂不记录}}');
             this._res.write(
                 data,
-                true,
-                this.emit('done')
+                true
             );
         }
 
@@ -252,7 +245,6 @@ BigPipe.prototype = {
 
         // 所有pagelet都已经从队列中输出
         if(!this.length) {
-            this.emit('done');
             this.emit('end');
         }
 
@@ -280,8 +272,9 @@ BigPipe.prototype = {
     createPagelets: function() {
         var bigpipe = this;
         var _pagelets = this._pagelets = [];
+        var allPagelets = this._getAllPagelets();
 
-        _.forIn(this.pagelets, function(pagelet, name) {
+        _.forIn(allPagelets, function(pagelet, name) {
             var options = {
                 req: bigpipe._req,
                 res: bigpipe._res,
@@ -297,10 +290,24 @@ BigPipe.prototype = {
         });
 
         //refresh length + layout
-        bigpipe.length = _pagelets.length;
+        bigpipe.length = bigpipe.pagelets.length;
 
         return _pagelets;
 
+    },
+
+    _getAllPagelets: function() {
+        return this.pagelets.reduce(function(pre, pagelet) {
+            var pgClass = pagelet.prototype;
+            pre[pgClass.name] = pagelet;
+
+            pgClass.wait.length && pgClass.wait.reduce(function(preWait, cur) {
+                preWait[cur.prototype.name] = cur;
+                return preWait;
+            }, pre);
+
+            return pre;
+        }, {});
     },
 
     /**
@@ -558,6 +565,20 @@ BigPipe.create = (function() {
         return __instance[name];
     }
 })();
+
+// pageletName
+
+function getPageletsName(pagelets) {
+    if(typeof pagelets === 'string') {
+        return pagelets;
+    }
+
+    if(_.isArray(pagelets)) {
+        return pagelets.map(function (pre, cur) {
+            return pre.prototype.name;
+        }).join('|');
+    }
+}
 
 // function noop
 function NOOP() {}

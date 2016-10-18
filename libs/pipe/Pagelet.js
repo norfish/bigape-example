@@ -46,8 +46,6 @@ function Pagelet(name, options) {
 
     this._dependData = {};
 
-    this._cache = null;
-
     // 初始化
     this.initialize.apply(this);
 }
@@ -60,9 +58,6 @@ Pagelet.prototype = {
     name: '',
 
     domID: '',
-
-    // 子片段
-    pagelets: null,
 
     // template
     template: '',
@@ -79,12 +74,8 @@ Pagelet.prototype = {
      */
     styles: '',
 
-    _parent: null,
-
-    _children: null,
-
-    // 是否在依赖其他模块
-    _isWaiting: true,
+    // 需要依赖的模块
+    wait: [],
 
     // require: null,
 
@@ -115,9 +106,6 @@ Pagelet.prototype = {
         }
     },
 
-    //需要依赖其他模块
-    wait: null,
-
     get: function() {
         var pagelet = this;
         return this.ready()
@@ -142,21 +130,23 @@ Pagelet.prototype = {
         logger.info('开始获取数据['+ pagelet.name +']');
 
         // 避免重复获取数据
-        if(pagelet._cache) {
-            logger.info('使用数据缓存['+ pagelet.name +']', pagelet._cache);
-            return Promise.resolve(pagelet._cache);
+        var _cache = this.getCache();
+        if(_cache) {
+            logger.info('使用数据缓存['+ pagelet.name +']', _cache);
+            return Promise.resolve(_cache);
         }
 
         var getOriginData = this.getRenderData();
 
         if(!this.isPromise(getOriginData)) {
+            logger.record('使用同步方式获取模块数据成功['+ pagelet.name +']', json);
             getOriginData = Promise.resolve(getOriginData);
         }
 
         return getOriginData.then(function(json) {
             logger.record('获取模块数据成功['+ pagelet.name +']', json);
             var data = pagelet.beforeRender(json);
-            pagelet._cache = data;
+            pagelet.setCache(data);
             return data;
 
         }, function(error) {
@@ -171,7 +161,21 @@ Pagelet.prototype = {
     },
 
     getStore: function() {
-        return this.bigpipe._store;
+        var store = this.bigpipe.store;
+        return store.get.apply(store, arguments);
+    },
+
+    setStore: function() {
+        var store = this.bigpipe.store;
+        return store.set.apply(store, arguments);
+    },
+
+    getCache: function() {
+        return this.getStore(this.name);
+    },
+
+    setCache: function(data) {
+        return this.setStore(this.name, data);
     },
 
     ready: function(done) {
@@ -245,8 +249,8 @@ Pagelet.prototype = {
         var pagelet = this;
 
         return this._getRenderHtml()
-            .then(function(html) {
-                return html;
+            .then(function(source) {
+                return source.html;
             })
             // handle error
             .catch(function(err) {

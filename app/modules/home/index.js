@@ -13,11 +13,7 @@ var modC = require('./modC');
 var HomeAction = BigPipe.create('home', {
     bootstrap: layout,
 
-    pagelets: {
-        'modA': modA,
-        'modB': modB,
-        'modC': modC
-    }
+    pagelets: [modA, modB, modC]
 });
 
 module.exports = HomeAction;
