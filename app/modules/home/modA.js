@@ -28,7 +28,8 @@ module.exports = Pagelet.extend({
         var store = this.getStore();
         return {
             msg: 'parsed mod-a' + data.info,
-            dep: store.modB.msg + '||' + store.modC.msg
+            dep: store.modB.msg + '||' + store.modC.msg,
+            info: store.modB.info
         }
     }
 });

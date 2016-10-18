@@ -21,7 +21,16 @@ module.exports = Pagelet.extend({
         var store = this.getStore();
         return {
             msg: 'parsed mod-b',
-            dep: store.modC.msg
+            dep: store.modC.msg,
+            info: data
         }
+    },
+
+    getRenderData: function() {
+        return new Promise(function(resolve, reject) {
+            setTimeout(function() {
+                resolve('Async mod-B data');
+            }, 200)
+        })
     }
 });
