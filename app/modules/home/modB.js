@@ -27,7 +27,7 @@ module.exports = Pagelet.extend({
         }
     },
 
-    getRenderData: function() {
+    getService: function() {
         return new Promise(function(resolve, reject) {
             setTimeout(function() {
                 resolve('Async mod-B data');

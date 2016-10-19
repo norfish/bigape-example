@@ -2,9 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0beb2d45-9683-4a78-9f74-c4ee86ea2d68" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/modules/home/service/testA.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/partials/error.handlebars" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/modules/home/layout.js" afterPath="$PROJECT_DIR$/app/modules/home/layout.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/modules/home/modA.js" afterPath="$PROJECT_DIR$/app/modules/home/modA.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/modules/home/modB.js" afterPath="$PROJECT_DIR$/app/modules/home/modB.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/modules/home/modC.js" afterPath="$PROJECT_DIR$/app/modules/home/modC.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/pipe/BigPipe.js" afterPath="$PROJECT_DIR$/libs/pipe/BigPipe.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/pipe/Pagelet.js" afterPath="$PROJECT_DIR$/libs/pipe/Pagelet.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/pipe/Service.js" afterPath="$PROJECT_DIR$/libs/pipe/Service.js" />
     </list>
     <ignored path="beep.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -27,31 +34,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="BigPipe.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="BigPipe.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/libs/pipe/BigPipe.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="250" column="3" selection-start-line="250" selection-start-column="3" selection-end-line="250" selection-end-column="3" />
-              <folding>
-                <marker date="1476793577000" expanded="true" signature="0:161" ph="/** @desc: Bigpipe ...*/" />
-                <marker date="1476793577000" expanded="true" signature="12004:12435" ph="{...}" />
-                <marker date="1476793577000" expanded="true" signature="12150:12255" ph="{...}" />
-                <marker date="1476793577000" expanded="true" signature="12279:12427" ph="{...}" />
-                <marker date="1476793577000" expanded="true" signature="12490:12545" ph="{...}" />
-                <marker date="1476793577000" expanded="true" signature="12500:12539" ph="/** do something ...*/" />
-                <marker date="1476793577000" expanded="true" signature="12577:12701" ph="{...}" />
-                <marker date="1476793577000" expanded="true" signature="12605:12694" ph="{...}" />
-                <marker date="1476793577000" expanded="true" signature="12708:12822" ph="/** response json data to the client ...*/" />
-                <marker date="1476793577000" expanded="true" signature="12849:13173" ph="{...}" />
-                <marker date="1476793577000" expanded="true" signature="12894:12946" ph="{...}" />
-                <marker date="1476793577000" expanded="true" signature="12995:13045" ph="{...}" />
-                <marker date="1476793577000" expanded="true" signature="13076:13165" ph="{...}" />
-                <marker date="1476793577000" expanded="true" signature="13180:13318" ph="/** 根据error Object 获取error json ...*/" />
-                <marker date="1476793577000" expanded="true" signature="13352:13478" ph="{...}" />
-                <marker date="1476793577000" expanded="true" signature="13369:13472" ph="{...}" />
-                <marker date="1476793577000" expanded="true" signature="13485:13615" ph="/** 统一异常处理 ...*/" />
-                <marker date="1476793577000" expanded="true" signature="13641:13691" ph="{...}" />
-              </folding>
+            <state relative-caret-position="119">
+              <caret line="230" column="19" selection-start-line="230" selection-start-column="19" selection-end-line="230" selection-end-column="19" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Service.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/libs/pipe/Service.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="399">
+              <caret line="194" column="9" selection-start-line="194" selection-start-column="9" selection-end-line="194" selection-end-column="9" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -59,38 +57,31 @@
       <file leaf-file-name="Pagelet.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/libs/pipe/Pagelet.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="298" column="7" selection-start-line="298" selection-start-column="7" selection-end-line="298" selection-end-column="7" />
-              <folding />
+            <state relative-caret-position="374">
+              <caret line="112" column="34" selection-start-line="112" selection-start-column="34" selection-end-line="112" selection-end-column="34" />
+              <folding>
+                <marker date="1476897691000" expanded="true" signature="1080:1123" ph="/** 样式 ...*/" />
+                <marker date="1476897691000" expanded="true" signature="9163:9226" ph="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Store.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/libs/pipe/Store.js">
+      <file leaf-file-name="error.handlebars" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/partials/error.handlebars">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
+            <state relative-caret-position="0">
+              <caret line="0" column="5" selection-start-line="0" selection-start-column="5" selection-end-line="0" selection-end-column="5" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="modA.handlebars" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/partials/modA.handlebars">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="layout.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="layout.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/modules/home/layout.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" column="3" selection-start-line="12" selection-start-column="3" selection-end-line="12" selection-end-column="3" />
+            <state relative-caret-position="102">
+              <caret line="6" column="49" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="49" />
               <folding />
             </state>
           </provider>
@@ -99,11 +90,19 @@
       <file leaf-file-name="modA.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/modules/home/modA.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="239">
-              <caret line="27" column="16" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
-              <folding>
-                <marker date="1476778367000" expanded="true" signature="631:647" ph="{...}" />
-              </folding>
+            <state relative-caret-position="222">
+              <caret line="29" column="16" selection-start-line="29" selection-start-column="16" selection-end-line="29" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="modA.handlebars" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/partials/modA.handlebars">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="3" column="7" selection-start-line="3" selection-start-column="7" selection-end-line="3" selection-end-column="7" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -111,8 +110,8 @@
       <file leaf-file-name="modC.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/modules/home/modC.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="27" column="10" selection-start-line="27" selection-start-column="10" selection-end-line="27" selection-end-column="10" />
+            <state relative-caret-position="391">
+              <caret line="23" column="28" selection-start-line="23" selection-start-column="28" selection-end-line="23" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -121,35 +120,18 @@
       <file leaf-file-name="modB.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/modules/home/modB.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="436">
-              <caret line="31" column="16" selection-start-line="31" selection-start-column="16" selection-end-line="31" selection-end-column="16" />
-              <folding>
-                <marker date="1476778367000" expanded="true" signature="0:78" ph="/** @desc: modB ...*/" />
-                <marker date="1476778367000" expanded="true" signature="758:764" ph="{...}" />
-              </folding>
+            <state relative-caret-position="205">
+              <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controllers/test.js">
+      <file leaf-file-name="testA.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/modules/home/service/testA.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="33" column="31" selection-start-line="33" selection-start-column="31" selection-end-line="33" selection-end-column="31" />
-              <folding>
-                <marker date="1476779713000" expanded="true" signature="0:78" ph="/** @desc: test ...*/" />
-                <marker date="1476779713000" expanded="true" signature="350:386" ph="{...}" />
-                <marker date="1476779713000" expanded="true" signature="1072:1139" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="274">
-              <caret line="57" column="0" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
+            <state relative-caret-position="204">
+              <caret line="12" column="19" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -176,14 +158,17 @@
         <option value="$PROJECT_DIR$/routes/index.js" />
         <option value="$PROJECT_DIR$/node_modules/compression/index.js" />
         <option value="$PROJECT_DIR$/views/partials/modA.handlebars" />
-        <option value="$PROJECT_DIR$/app/modules/home/modC.js" />
         <option value="$PROJECT_DIR$/app/controllers/test.js" />
-        <option value="$PROJECT_DIR$/app/modules/home/modA.js" />
-        <option value="$PROJECT_DIR$/app/modules/home/modB.js" />
-        <option value="$PROJECT_DIR$/libs/pipe/BigPipe.js" />
         <option value="$PROJECT_DIR$/libs/pipe/Store.js" />
-        <option value="$PROJECT_DIR$/libs/pipe/Pagelet.js" />
+        <option value="$PROJECT_DIR$/app/modules/home/modC.js" />
         <option value="$PROJECT_DIR$/app/modules/home/layout.js" />
+        <option value="$PROJECT_DIR$/app/modules/home/service/testA.js" />
+        <option value="$PROJECT_DIR$/views/partials/error.handlebars" />
+        <option value="$PROJECT_DIR$/libs/pipe/Service.js" />
+        <option value="$PROJECT_DIR$/libs/pipe/Pagelet.js" />
+        <option value="$PROJECT_DIR$/app/modules/home/modB.js" />
+        <option value="$PROJECT_DIR$/app/modules/home/modA.js" />
+        <option value="$PROJECT_DIR$/libs/pipe/BigPipe.js" />
       </list>
     </option>
   </component>
@@ -381,7 +366,47 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="modules" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="home" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="service" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="beep" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="beep" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="controllers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="beep" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="beep" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="__test__" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -481,12 +506,12 @@
       <workItem from="1473681941674" duration="20342000" />
       <workItem from="1474895987511" duration="10922000" />
       <workItem from="1474959101992" duration="4000" />
-      <workItem from="1476721348625" duration="16536000" />
+      <workItem from="1476721348625" duration="19902000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="47804000" />
+    <option name="totallyTimeSpent" value="51170000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1440" height="818" extended-state="6" />
@@ -501,7 +526,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292011" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3278237" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.69008267" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -529,30 +554,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/node_modules/compression/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1054">
-          <caret line="69" column="5" selection-start-line="69" selection-start-column="5" selection-end-line="69" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/express/lib/response.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/@qnpm/q-template/node_modules/bluebird/js/main/util.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/@qnpm/q-template/node_modules/bluebird/js/main/promise.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4216">
@@ -581,7 +582,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2941">
           <caret line="173" column="28" selection-start-line="173" selection-start-column="28" selection-end-line="173" selection-end-column="28" />
-          <folding />
+          <folding>
+            <marker date="1476897691000" expanded="true" signature="1080:1123" ph="/** 样式 ...*/" />
+            <marker date="1476897691000" expanded="true" signature="9163:9226" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -611,26 +615,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2125">
           <caret line="125" column="0" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
-          <folding>
-            <marker date="1476793577000" expanded="true" signature="0:161" ph="/** @desc: Bigpipe ...*/" />
-            <marker date="1476793577000" expanded="true" signature="12004:12435" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="12150:12255" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="12279:12427" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="12490:12545" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="12500:12539" ph="/** do something ...*/" />
-            <marker date="1476793577000" expanded="true" signature="12577:12701" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="12605:12694" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="12708:12822" ph="/** response json data to the client ...*/" />
-            <marker date="1476793577000" expanded="true" signature="12849:13173" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="12894:12946" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="12995:13045" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="13076:13165" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="13180:13318" ph="/** 根据error Object 获取error json ...*/" />
-            <marker date="1476793577000" expanded="true" signature="13352:13478" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="13369:13472" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="13485:13615" ph="/** 统一异常处理 ...*/" />
-            <marker date="1476793577000" expanded="true" signature="13641:13691" ph="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -686,7 +671,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2941">
           <caret line="173" column="28" selection-start-line="173" selection-start-column="28" selection-end-line="173" selection-end-column="28" />
-          <folding />
+          <folding>
+            <marker date="1476897691000" expanded="true" signature="1080:1123" ph="/** 样式 ...*/" />
+            <marker date="1476897691000" expanded="true" signature="9163:9226" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -716,26 +704,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1360">
           <caret line="80" column="22" selection-start-line="80" selection-start-column="22" selection-end-line="80" selection-end-column="22" />
-          <folding>
-            <marker date="1476793577000" expanded="true" signature="0:161" ph="/** @desc: Bigpipe ...*/" />
-            <marker date="1476793577000" expanded="true" signature="12004:12435" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="12150:12255" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="12279:12427" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="12490:12545" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="12500:12539" ph="/** do something ...*/" />
-            <marker date="1476793577000" expanded="true" signature="12577:12701" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="12605:12694" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="12708:12822" ph="/** response json data to the client ...*/" />
-            <marker date="1476793577000" expanded="true" signature="12849:13173" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="12894:12946" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="12995:13045" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="13076:13165" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="13180:13318" ph="/** 根据error Object 获取error json ...*/" />
-            <marker date="1476793577000" expanded="true" signature="13352:13478" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="13369:13472" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="13485:13615" ph="/** 统一异常处理 ...*/" />
-            <marker date="1476793577000" expanded="true" signature="13641:13691" ph="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -751,7 +720,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2278">
           <caret line="134" column="10" selection-start-line="134" selection-start-column="10" selection-end-line="134" selection-end-column="10" />
-          <folding />
+          <folding>
+            <marker date="1476897691000" expanded="true" signature="1080:1123" ph="/** 样式 ...*/" />
+            <marker date="1476897691000" expanded="true" signature="9163:9226" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -886,36 +858,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/modules/home/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="10" selection-end-column="29" />
-          <folding>
-            <marker date="1476779947000" expanded="true" signature="339:357" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/partials/modA.handlebars">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="274">
           <caret line="57" column="0" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/modules/home/modC.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="27" column="10" selection-start-line="27" selection-start-column="10" selection-end-line="27" selection-end-column="10" />
           <folding />
         </state>
       </provider>
@@ -932,54 +878,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/modules/home/modA.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="27" column="16" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
-          <folding>
-            <marker date="1476778367000" expanded="true" signature="631:647" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/modules/home/modB.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="436">
-          <caret line="31" column="16" selection-start-line="31" selection-start-column="16" selection-end-line="31" selection-end-column="16" />
-          <folding>
-            <marker date="1476778367000" expanded="true" signature="0:78" ph="/** @desc: modB ...*/" />
-            <marker date="1476778367000" expanded="true" signature="758:764" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/libs/pipe/BigPipe.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="250" column="3" selection-start-line="250" selection-start-column="3" selection-end-line="250" selection-end-column="3" />
-          <folding>
-            <marker date="1476793577000" expanded="true" signature="0:161" ph="/** @desc: Bigpipe ...*/" />
-            <marker date="1476793577000" expanded="true" signature="12004:12435" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="12150:12255" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="12279:12427" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="12490:12545" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="12500:12539" ph="/** do something ...*/" />
-            <marker date="1476793577000" expanded="true" signature="12577:12701" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="12605:12694" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="12708:12822" ph="/** response json data to the client ...*/" />
-            <marker date="1476793577000" expanded="true" signature="12849:13173" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="12894:12946" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="12995:13045" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="13076:13165" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="13180:13318" ph="/** 根据error Object 获取error json ...*/" />
-            <marker date="1476793577000" expanded="true" signature="13352:13478" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="13369:13472" ph="{...}" />
-            <marker date="1476793577000" expanded="true" signature="13485:13615" ph="/** 统一异常处理 ...*/" />
-            <marker date="1476793577000" expanded="true" signature="13641:13691" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/libs/pipe/Store.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
@@ -988,18 +886,95 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/libs/pipe/Pagelet.js">
+    <entry file="file://$PROJECT_DIR$/app/modules/home/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="298" column="7" selection-start-line="298" selection-start-column="7" selection-end-line="298" selection-end-column="7" />
-          <folding />
+        <state relative-caret-position="68">
+          <caret line="4" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="10" selection-end-column="29" />
+          <folding>
+            <marker date="1476779947000" expanded="true" signature="339:357" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/modules/home/layout.js">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="49" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/modules/home/service/testA.js">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
-          <caret line="12" column="3" selection-start-line="12" selection-start-column="3" selection-end-line="12" selection-end-column="3" />
+          <caret line="12" column="19" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/partials/error.handlebars">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="5" selection-start-line="0" selection-start-column="5" selection-end-line="0" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/libs/pipe/Service.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="194" column="9" selection-start-line="194" selection-start-column="9" selection-end-line="194" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/partials/modA.handlebars">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="7" selection-start-line="3" selection-start-column="7" selection-end-line="3" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/libs/pipe/Pagelet.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="112" column="34" selection-start-line="112" selection-start-column="34" selection-end-line="112" selection-end-column="34" />
+          <folding>
+            <marker date="1476897691000" expanded="true" signature="1080:1123" ph="/** 样式 ...*/" />
+            <marker date="1476897691000" expanded="true" signature="9163:9226" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/modules/home/modA.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="222">
+          <caret line="29" column="16" selection-start-line="29" selection-start-column="16" selection-end-line="29" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/modules/home/modB.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="205">
+          <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/modules/home/modC.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="23" column="28" selection-start-line="23" selection-start-column="28" selection-end-line="23" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/libs/pipe/BigPipe.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="230" column="19" selection-start-line="230" selection-start-column="19" selection-end-line="230" selection-end-column="19" />
           <folding />
         </state>
       </provider>

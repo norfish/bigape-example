@@ -119,6 +119,11 @@ BigPipe.prototype = {
                 pagelet.ready('ready');
             });
         });
+
+        this.once('page:error', function(err) {
+            logger.info('出现错误, 需要终止页面渲染', err);
+            bigpipe.renderError(err);
+        })
     },
 
     /**
@@ -221,7 +226,9 @@ BigPipe.prototype = {
 
         // 确保不会在 end 之后再 write chunk
         if(this._res.finished) {
+            logger.error('Response was closed, unable to flush content');
             this.emit('done', new Error('Response was closed, unable to flush content'));
+            return;
         }
 
         var data = new Buffer(this.join(), this.charset);
@@ -230,7 +237,7 @@ BigPipe.prototype = {
         }).join('&');
 
         if(data.length) {
-            logger.record('info: flush pagelet ['+ pageletName +'] data {{', data.toString(),'暂不记录}}');
+            logger.record('info: flush pagelet ['+ pageletName +'] data {{', /*data.toString(),*/'暂不记录}}');
             this._res.write(
                 data,
                 true
@@ -297,6 +304,17 @@ BigPipe.prototype = {
     },
 
     _getAllPagelets: function() {
+
+        // TODO 为了兼容之前的API，需要后期统一成数组
+        if(_.isPlainObject(this.pagelets)) {
+            var temp = [];
+            _.forIn(this.pagelets, function(pagelet){
+                temp.push(pagelet);
+            });
+            this.pagelets = temp;
+        }
+
+
         return this.pagelets.reduce(function(pre, pagelet) {
             var pgClass = pagelet.prototype;
             pre[pgClass.name] = pagelet;
@@ -422,7 +440,7 @@ BigPipe.prototype = {
             // temp[modName] = mod.get();
             // return temp;
         }).then(function(data) {
-            logger.record('获取API接口数据成功', data);
+            logger.record('获取API接口数据成功');
             bigpipe._json(data);
         }, function (data) {
             logger.record('获取API接口数据失败');
@@ -480,7 +498,7 @@ BigPipe.prototype = {
 
         // bigpipe._res.set('Content-Type', 'text/html; charset=utf-8');
         module.renderSnippet().then(function(snippet) {
-            logger.record('获取snippet成功，flush到客户端', snippet);
+            logger.record('获取snippet成功，flush到客户端'/*, snippet*/);
             module.end(snippet);
         }).catch(function(error) {
             logger.error('处理snippet数据错误', error);
@@ -534,6 +552,11 @@ BigPipe.prototype = {
             status: error.status || 502,
             message: error.message || '系统繁忙,请稍后重试'
         }
+    },
+
+    renderError: function(error) {
+        var _html = '<h1>'+ error.status +'</h1><p>'+ error.message +'</p>';
+        this._res.end(_html);
     },
 
     /**

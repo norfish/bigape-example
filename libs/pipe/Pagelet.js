@@ -75,20 +75,16 @@ Pagelet.prototype = {
     // 需要依赖的模块
     wait: [],
 
-    // require: null,
+    // 是否是关键性的模块
+    isErrorFatal: false,
 
-    service: function() {
-        return this.getService();
-    },
-
+    /**
+     * 获取渲染的原始数据 可以被覆盖，默认是通过service取接口数据，返回promise
+     * 支持返回同步数据或者Promise异步
+     * @return {[type]} [description]
+     */
     getService: function() {
-        return new Promise(function(resolve, reject) {
-            setTimeout(function() {
-                resolve({
-                    info: 'demo'
-                })
-            }, 0);
-        })
+        return null;
     },
 
     initialize: function() {
@@ -112,10 +108,12 @@ Pagelet.prototype = {
         var pagelet = this;
         return this.ready()
             .then(function() {
-                return pagelet._getAfterReady();
+                return pagelet.getServiceData();
             })
             .then(function(data) {
-                logger.info('数据处理成功，触发事件['+ pagelet.name +':done]', data);
+                data = pagelet.beforeRender(data);
+                pagelet.setCache(data);
+                logger.info('数据处理成功，触发事件['+ pagelet.name +':done]'/*, data*/);
                 pagelet.bigpipe.emit(pagelet.name + ':done', data);
                 return data;
             })
@@ -143,20 +141,6 @@ Pagelet.prototype = {
     },
 
     /**
-     * 获取渲染的原始数据 可以被覆盖，默认是通过service取接口数据，返回promise
-     * 支持返回同步数据或者Promise异步
-     * @return {[type]} [description]
-     */
-    getRenderData: function() {
-        var serviceData = {};
-        if(typeof this.service === 'function') {
-            serviceData = this.service();
-        }
-
-        return serviceData;
-    },
-
-    /**
      * 处理通过getRenderData获取的原始数据
      * @param  {Object} json 原始数据
      * @return {Object}      处理之后的数据
@@ -178,9 +162,9 @@ Pagelet.prototype = {
 
         logger.info('开始渲染Pagelet模块['+ pagelet.name +']@', new Date());
 
-        return this._getRenderHtml()
+        return this.getRenderHtml()
             .then(function(source) {
-                return pagelet._createChunk(source);
+                return pagelet.createChunk(source);
             })
             // handle error
             .catch(function(err) {
@@ -197,7 +181,7 @@ Pagelet.prototype = {
     renderSnippet: function() {
         var pagelet = this;
 
-        return this._getRenderHtml()
+        return this.getRenderHtml()
             .then(function(html) {
                 return html;
             })
@@ -212,7 +196,7 @@ Pagelet.prototype = {
      * 暴露出的获取本pagelet数据的函数  readonly
      * @return {Object} parsed pagelet data {name: data}  function(data){}
      */
-    _getAfterReady: function() {
+    getServiceData: function() {
 
         var pagelet = this;
 
@@ -222,34 +206,31 @@ Pagelet.prototype = {
         // 避免重复获取数据
         var _cache = this.getCache();
         if(_cache) {
-            logger.info('使用数据缓存['+ pagelet.name +']', _cache);
+            logger.info('使用数据缓存['+ pagelet.name +']'/*, _cache*/);
             return Promise.resolve(_cache);
         }
 
-        var getOriginData = this.getRenderData();
+        var getOriginData = this.getService();
 
         // 如果数据可以同步, 直接返回同步数据
         if(!this.isPromise(getOriginData)) {
-            logger.info('使用同步方式获取数据['+ pagelet.name +']');
-            logger.record('获取模块数据成功['+ pagelet.name +']', json);
+            // logger.info('使用同步方式获取数据['+ pagelet.name +']');
+            logger.record('获取模块数据成功['+ pagelet.name +']');
             getOriginData = Promise.resolve(getOriginData);
         }
 
         return getOriginData.then(function(json) {
-            logger.record('获取模块数据成功['+ pagelet.name +']', json);
-            // beforeRender
-            var data = pagelet.beforeRender(json);
-            pagelet.setCache(data);
-            return data;
+            logger.record('获取模块数据成功['+ pagelet.name +']');
+            return json;
 
         }, function(error) {
             logger.error('获取pagelet数据失败', pagelet.name, error);
-            return pagelet._getErrObj(error);
+            return pagelet.catch(error);
 
         }).catch(function(error) {
             qmonitor.addCount('module_handler_error');
             logger.error('获取pagelet数据异常', pagelet.name, error);
-            return pagelet._getErrObj(error);
+            return pagelet.catch(error);
         });
     },
 
@@ -257,7 +238,7 @@ Pagelet.prototype = {
      * 获取 html 片段渲染结果
      * @return {Object} Promise   function(html){};
      */
-    _getRenderHtml: function() {
+    getRenderHtml: function() {
         var pagelet = this;
         var renderData;
 
@@ -265,14 +246,14 @@ Pagelet.prototype = {
             .then(function(parsed) {
                 renderData = Object.assign({}, parsed);
                 // ext data
-                pagelet._addExtRenderData(parsed);
+                pagelet.addExtRenderData(parsed);
 
-                return qtemplate.render(pagelet._getTemplatePath(), parsed);
+                return qtemplate.render(pagelet.getTemplatePath(), parsed);
 
             // 模板渲染reject时候，渲染错误信息
             }, function(error) {
                 logger.error('渲染pagelet失败', pagelet.name, error);
-                var errorObj = pagelet._getErrObj(error);
+                var errorObj = pagelet.getErrObj(error);
                 return qtemplate.render('partials/error', errorObj);
             })
             .then(function(html) {
@@ -281,20 +262,21 @@ Pagelet.prototype = {
             .catch(function(error) {
                 qmonitor.addCount('module_render_error');
                 logger.error('渲染pagelet异常', pagelet.name, error);
-                return pagelet._getErrObj(error);
+                return pagelet.getErrObj(error);
             });
     },
 
-    _getTemplatePath: function() {
-        if(this._isBootstrap()) {
-            return 'pages/' + this.template;
+    getTemplatePath: function() {
+        if(this.isBootstrap()) {
+            return this.template;
+            // return 'pages/' + this.template;
         } else {
             return 'partials/' + this.template;
         }
     },
 
     // 统一为渲染数据增加额外的数据
-    _addExtRenderData: function(parsed) {
+    addExtRenderData: function(parsed) {
         return _.assign(parsed, {
             locals: this.res.locals
         });
@@ -304,9 +286,9 @@ Pagelet.prototype = {
      * 生成数据块
      * @param {String} html
      */
-    _createChunk: function(html) {
+    createChunk: function(html) {
         // 如果是主框架则直接返回
-        if(this._isBootstrap()) {
+        if(this.isBootstrap()) {
             return html;
         }
 
@@ -314,19 +296,19 @@ Pagelet.prototype = {
             id: this.name,
             html: html,
             scripts: this.scripts,
-            data: this.getPipeData(),
+            data: this.getPipeData(this.getCache()),
             styles: this.styles,
             domID: this.domID,
             modID: this.name,
-            pageletDataKey: this.pageletDataKey,
-            dataEventName: this.dataEventName,
-            pageletEventName: this.pageletEventName
+            dataKey: this.dataKey || this.name,
+            dataEventName: this.dataEventName || this.dataKey || this.name,
+            pageletEventName: this.pageletEventName || this.domID
         };
 
         return '<script>BigPipe.onArrive('+ JSON.stringify(chunkObj) +')</script>'
     },
 
-    getPipeData: function () {
+    getPipeData: function (cache) {
         return null;
     },
 
@@ -334,7 +316,7 @@ Pagelet.prototype = {
      * 是否是基础模块
      * @return {Boolean}
      */
-    _isBootstrap: function() {
+    isBootstrap: function() {
         return this.name == 'layout' || this.name == 'bootstrap';
     },
 
@@ -397,15 +379,11 @@ Pagelet.prototype = {
      * @return {[type]}       [description]
      */
     catch: function(error) {
-        console.error('error', error);
-    },
-
-    /**
-     * 获取依赖数据
-     * @return {[type]} [description]
-     */
-    _getDepData: function() {
-
+        if(this.isErrorFatal) {
+            this.bigpipe.emit('page:error', error);
+        }
+        logger.error('catch error', error);
+        return this.getErrObj(error);
     },
 
     /**
@@ -413,15 +391,11 @@ Pagelet.prototype = {
      * @param  {Object} error error stack 或者Object
      * @return {Object}       error json
      */
-    _getErrObj: function (error) {
+    getErrObj: function (error) {
         return {
             status: error.status || 502,
             message: error.message || '系统繁忙,请稍后重试'
         }
-    },
-
-    _renderError: function(error) {
-
     },
 
     getStore: function() {
