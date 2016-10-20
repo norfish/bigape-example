@@ -228,7 +228,7 @@ BigPipe.prototype = {
         if(this._res.finished) {
             logger.error('Response was closed, unable to flush content');
             this.emit('done', new Error('Response was closed, unable to flush content'));
-            return;
+            // return;
         }
 
         var data = new Buffer(this.join(), this.charset);
@@ -436,9 +436,7 @@ BigPipe.prototype = {
                 return data;
             });
 
-            // var temp = {};
-            // temp[modName] = mod.get();
-            // return temp;
+
         }).then(function(data) {
             logger.record('获取API接口数据成功');
             bigpipe._json(data);

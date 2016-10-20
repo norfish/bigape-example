@@ -130,6 +130,23 @@ module.exports = {
         throw beforeLoadValid;
         return;
     },
+
+    // 接口代理
+    proxy: function (req, res) {
+
+    },
+
+    json: function (req, res) {
+        var self = this;
+        this.load(req, res).then(function(data) {
+            data = self.parse(data);
+            res.json(data);
+
+        }).catch(function(err) {
+            res.json(self._getErrorJson(err));
+        });
+    },
+
     /**
      * 配置通用参数
      * @private

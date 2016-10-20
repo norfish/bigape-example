@@ -3,13 +3,13 @@
  * @authors: yongxiang.li
  * @date: 2016-08-03 20:32:19
  *
- * getRenderData
+ * getService
  *
  *
  * lifecycle
  *
- * getRenderData
- * beforeRender(json)
+ * getService
+ * onServiceDone(json)
  * afterRender({
  * 	html: html,
  * 	renderData: renderData
@@ -46,6 +46,9 @@ function Pagelet(name, options) {
 
     // 初始化
     this.initialize.apply(this);
+
+    // 适配
+    this.adapt();
 }
 
 Pagelet.prototype = {
@@ -75,7 +78,7 @@ Pagelet.prototype = {
     // 需要依赖的模块
     wait: [],
 
-    // 是否是关键性的模块
+    // 是否是关键性的模块, 如果出错了是否立即终止请求，并返回错误
     isErrorFatal: false,
 
     /**
@@ -89,6 +92,15 @@ Pagelet.prototype = {
 
     initialize: function() {
         return this;
+    },
+
+    /**
+     * 适配器，为了兼容老的api
+     */
+    adapt: function() {
+        this.dataKey = this.pageletDataKey || this.dataKey;
+        this.getService = this.getRenderData || this.getService;
+        this.onServiceDone = this.beforeRender || this.onServiceDone;
     },
 
     bootstrap: function(value) {
@@ -111,7 +123,7 @@ Pagelet.prototype = {
                 return pagelet.getServiceData();
             })
             .then(function(data) {
-                data = pagelet.beforeRender(data);
+                data = pagelet.onServiceDone(data);
                 pagelet.setCache(data);
                 logger.info('数据处理成功，触发事件['+ pagelet.name +':done]'/*, data*/);
                 pagelet.bigpipe.emit(pagelet.name + ':done', data);
@@ -141,11 +153,11 @@ Pagelet.prototype = {
     },
 
     /**
-     * 处理通过getRenderData获取的原始数据
+     * 处理通过getService获取的原始数据
      * @param  {Object} json 原始数据
      * @return {Object}      处理之后的数据
      */
-    beforeRender: function(json) {
+    onServiceDone: function(json) {
         return json;
     },
 

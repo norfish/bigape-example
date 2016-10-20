@@ -6,7 +6,7 @@ var service = Service.create({
     qmonitor: 'login_validate_api',
 
     getURL: function() {
-        return 'http://api.jiulvxing.com/ucenter/verify'
+        return 'http://user.jiulvxing.com/ucenter/verify'
         // return URL('ONE_WAY_LIST');
     },
 
